@@ -1,0 +1,108 @@
+.contenedor-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; 
+  background-color: #f0f2f5; 
+  font-family: sans-serif;
+}
+
+.tarjeta-login {
+  background-color: #FFB9DA;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.tarjeta-login h1 {
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.tarjeta-login p {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.cabecera-login{
+  display: flex; 
+  align-items: center; 
+  justify-content: left; 
+  gap: 15px; 
+}
+
+.cabecera-registro{
+  display: flex; 
+  align-items: center; 
+  justify-content: left; 
+  gap: 30px; 
+}
+
+.logo{
+    width: 100px;
+    height: auto;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; 
+}
+
+.linea-divisoria{
+    margin-top: 0px;
+}
+
+.grupo-input {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.grupo-input label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #444;
+  font-size: 14px;
+}
+
+.grupo-input input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  font-size: 16px;
+}
+
+.grupo-input input:focus{
+    outline: none;
+    border: 2px solid #C53A55;
+}
+
+.boton-entrar {
+  background-color: #C53A55; 
+  color: white;
+  padding: 10px 50px;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3 ease;
+  width: fit-content; 
+  align-self: center;
+}
+
+.boton-entrar:hover{
+    transform: scale(1.05);
+    background-color: #A32942;
+}
+
+.link{
+    text-decoration: none;
+    color: #C53A55;
+}
