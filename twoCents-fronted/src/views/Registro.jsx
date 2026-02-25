@@ -2,76 +2,111 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 
-// Ajusta estas rutas si tus carpetas de imágenes o CSS están en otro sitio
+// Asegúrate de que la ruta a tu logo y tu CSS son correctas
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
-import './IniciarSesion.css'; 
+import './IniciarSesion.css'; // Usamos el mismo CSS para que la tarjeta se vea igual
 
-// Conectamos con el backend de Node
 const socket = io('http://localhost:3001');
 
 export default function Registro() {
-  // 1. Guardamos lo que el usuario escribe
-  const [email, setEmail] = useState('');
   const [usuario, setUsuario] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [terminosAceptados, setTerminosAceptados] = useState(false);
+  
+  // 1. EL ESTADO DE LA TARJETA
+  const [alerta, setAlerta] = useState({visible: false, mensaje: '', tipo: ''});
   
   const navigate = useNavigate();
 
-  // 2. Escuchamos si el servidor nos dice que todo ha ido bien
+  // 2. ESCUCHAMOS AL SERVIDOR
   useEffect(() => {
     socket.on('registro_resultado', (respuesta) => {
       if (respuesta.success) {
-        alert('¡Registro exitoso! Ya puedes iniciar sesión.');
-        navigate('/'); // Te manda al login
+        setAlerta({ 
+            visible: true, 
+            mensaje: `¡Registro exitoso! Ya puedes iniciar sesión.`, 
+            tipo: 'exito' 
+        });
+        
+        setTimeout(() => {
+          navigate('/'); // Te manda al login tras 1.5s
+        }, 1500);
+
       } else {
-        alert('Error: ' + respuesta.message);
+        setAlerta({ 
+            visible: true, 
+            mensaje: respuesta.message, 
+            tipo: 'error' 
+        });
       }
     });
 
     return () => socket.off('registro_resultado');
   }, [navigate]);
 
-  // 3. Al darle al botón rojo, enviamos los datos
+  // 3. ENVIAMOS LOS DATOS
   const manejarRegistro = (e) => {
-    e.preventDefault(); 
-    if (!terminosAceptados) return;
+    e.preventDefault();
     socket.emit('registrar_usuario', { usuario, email, password });
   };
 
   return (
-    // EL FONDO (La habitación)
     <div className="contenedor-login">
-      
-      {/* LA CAJA ROSA (El mueble) */}
       <div className="tarjeta-login">
+        
+        {/* --- LA TARJETA EMERGENTE (MODAL) --- */}
+        {alerta.visible && (
+          <div className="alerta-overlay">
+            <div className="alerta-tarjeta">
+              <h2 style={{ color: alerta.tipo === 'exito' ? '#a83250' : '#a83250' }}>
+                {alerta.tipo === 'exito' ? '¡Genial!' : 'Ups...'}
+              </h2>
+              <p className="linea-divisoria">________________________</p>
+              <p style={{ margin: '20px 0', fontSize: '18px', color: 'black' }}>{alerta.mensaje}</p>
+              
+              {alerta.tipo === 'error' && (
+                <button 
+                  className="boton-entrar" 
+                  onClick={() => setAlerta({ visible: false, mensaje: '', tipo: '' })}
+                >
+                  Reintentar
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+        {/* ---------------------------------- */}
+
         <div className='cabecera-registro'>
           <img src={logoTwoCents} alt="logoTwoCents" className='logo'/>
-          <h1>Registrarse</h1>  
+          <h1>Registrase</h1>  
         </div>
         
         <p className='linea-divisoria'>_______________________________________________</p>
         
         <form className="formulario" onSubmit={manejarRegistro}>
+          
           <div className="grupo-input">
             <input 
               type="email" 
-              placeholder="Correo electrónico..." 
+              placeholder="Correo electrónico" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-
+          
           <div className="grupo-input">
             <input 
               type="text" 
-              placeholder="Nombre de Usuario..." 
+              placeholder="Nombre de Usuario" 
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
               required
             />
           </div>
+
+          
 
           <div className="grupo-input">
             <input 
@@ -83,30 +118,15 @@ export default function Registro() {
             />
           </div>
           
-          {/* CHECKBOX PERSONALIZADO */}
-          <label className="checkbox-contenedor">
-            <input
-              type="checkbox"
-              checked={terminosAceptados}
-              onChange={(e) => setTerminosAceptados(e.target.checked)}
-              className="checkbox-oculto"
-            />
-            <div className={`checkbox-visual ${terminosAceptados ? 'marcado' : ''}`}>
-              {terminosAceptados}
-            </div>
-            <span className="checkbox-texto">He leído y Acepto los términos y condiciones</span>
-          </label>
-
-          <button type="submit" className="boton-entrar" disabled={!terminosAceptados}>
+          <button type="submit" className="boton-entrar">
             Registrarse
           </button>
         </form>
         
         <p style={{ marginTop: '20px', fontSize: '14px', color: 'black' }}>
-          ¿Ya tienes cuenta?,  <Link className='link' to="/">Iniciar Sesion</Link>
+          ¿Ya tienes cuenta? <Link className='link' to="/">Inicia Sesión</Link>
         </p>
       </div>
-
     </div>
   );
 }
