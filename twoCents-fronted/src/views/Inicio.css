@@ -1,0 +1,145 @@
+/* src/views/Inicio.css */
+
+/* 1. ESTRUCTURA GLOBAL */
+.pagina-inicio {
+  margin-left: 100px; /* Deja espacio para la Sidebar fija */
+  padding: 3rem 4rem; /* Aire alrededor del contenido */
+  min-height: 100vh; /* Que el fondo cubra toda la pantalla */
+  background-color: #f3f4f6; /* Gris clarito de fondo */
+}
+
+/* 2. TÍTULO PRINCIPAL */
+.titulo-principal {
+  font-family: serif;
+  font-size: 2.5rem;
+  text-align: center; /* Centrado en su hueco */
+  color: #141824;
+  margin-bottom: 3rem; /* Separación con las noticias */
+}
+
+/* 3. EL CONTENEDOR (La rejilla) */
+.contenedor-noticias {
+  display: grid;
+  /* Crea 2 columnas iguales */
+  grid-template-columns: repeat(2, 1fr);
+  /* gap: Primero define el espacio vertical y luego el horizontal */
+  gap: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto; /* Centra el bloque de noticias */
+}
+
+/* 4. LA TARJETA (Cada noticia individual) */
+.tarjeta-noticia {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+  /* Flexbox interno para alinear elementos verticalmente */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  /* IMPORTANTE: Altura mínima para que no se encojan si hay poco texto */
+  min-height: 450px;
+}
+
+/* 5. ELEMENTOS INTERNOS DE LA NOTICIA */
+.noticia-titulo {
+  font-family: serif;
+  font-size: 1.4rem;
+  color: #141824;
+  margin-bottom: 1.5rem; /* Separación con la imagen */
+  line-height: 1.3;
+}
+
+.noticia-imagen {
+  width: 100%;
+  height: 250px; /* Altura fija para todas las fotos */
+  object-fit: cover; /* Ajusta la foto sin deformarla */
+  border-radius: 8px;
+}
+
+.noticia-pie {
+  margin-top: auto; /* Empuja el botón siempre al fondo de la tarjeta */
+  display: flex;
+  justify-content: flex-end; /* Botón a la derecha */
+  padding-top: 1rem;
+}
+
+/* 6. BOTÓN */
+.boton-ver-mas {
+  background-color: #c83a56;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.8rem;
+  border-radius: 25px;
+  font-family: serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.boton-ver-mas:hover {
+  background-color: #a62e45;
+  transform: translateY(-2px); /* Pequeño salto al pasar el ratón */
+}
+
+/* =========================================
+   7. RESPONSIVE DEFINITIVO (Móviles)
+   ========================================= */
+
+@media (max-width: 800px) {
+  /* --- 1. LAS NOTICIAS (1 COLUMNA) --- */
+  .pagina-inicio {
+    margin-left: 0 !important; /* Quitamos el hueco lateral */
+    margin-top: 80px; /* Hueco para que la barra de arriba no tape el título */
+    padding: 1.5rem;
+  }
+
+  .contenedor-noticias {
+    grid-template-columns: 1fr !important; /* ¡FUERZA UNA SOLA COLUMNA! */
+    gap: 2rem;
+  }
+
+  .noticia-imagen {
+    height: 220px; /* Ajustamos un poco la foto para móvil */
+  }
+
+  /* --- 2. LA SIDEBAR (AHORA ES NAVBAR ARRIBA) --- */
+  .sidebar {
+    width: 100% !important;
+    height: 65px !important;
+    flex-direction: row !important; /* Iconos en fila */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    border-right: none;
+    border-bottom: 1px solid #d1d5db;
+  }
+
+  /* Ocultamos lo que no cabe en el móvil */
+  .sidebar-logo-caja,
+  .separador,
+  .texto-opcion,
+  .menu-abajo {
+    display: none !important;
+  }
+
+  /* Repartimos los iconos por la barra superior */
+  .menu-nav {
+    flex-direction: row !important;
+    width: 100%;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+  }
+
+  .boton-opcion {
+    min-width: auto !important;
+    flex: 1;
+    justify-content: center;
+    height: 65px;
+    border-radius: 0;
+  }
+}

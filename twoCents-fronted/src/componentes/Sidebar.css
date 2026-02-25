@@ -1,0 +1,137 @@
+/* src/componentes/Sidebar.css */
+
+/* 1. CONTENEDOR PRINCIPAL: Controla el ancho y el desplazamiento */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100px; /* Ancho inicial (solo iconos) */
+  background-color: white;
+  border-right: 1px solid #d1d5db;
+  transition: width 0.3s ease-in-out; /* Animación de apertura suave */
+  overflow-y: auto; /* Scroll vertical si hay muchos iconos */
+  overflow-x: hidden; /* Evita que el texto asome antes de tiempo */
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Oculta la barra de scroll para que no afee el diseño */
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Al pasar el ratón, la barra se ensancha */
+.sidebar:hover {
+  width: 270px;
+}
+
+/* 2. LOGO: Espacio superior para la marca */
+.sidebar-logo-caja {
+  margin-top: 1rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  min-width: 270px;
+}
+
+.sidebar-logo {
+  height: 45px;
+  width: 100px;
+  object-fit: contain;
+}
+
+/* 3. SEPARADOR: La línea horizontal que crece al abrir la barra */
+.separador {
+  width: 50px;
+  margin: 1rem auto;
+  border: 0;
+  border-top: 1px solid #d1d5db;
+  transition: width 0.3s;
+}
+
+.sidebar:hover .separador {
+  width: 210px;
+}
+
+/* 4. MENÚ DE NAVEGACIÓN: Agrupa los botones */
+.menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+  padding: 0 0.5rem;
+  flex: 1;
+  justify-content: flex-start;
+  margin-top: 1rem;
+}
+
+/* 5. BOTONES DE OPCIÓN: El corazón de la Sidebar */
+.boton-opcion {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  border-radius: 1rem;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease; /* Transición para color y transformación */
+  min-width: 250px;
+  text-align: left;
+  padding: 0;
+}
+
+/* HOVER: Aquí aplicamos el rosa flojito que pediste */
+.boton-opcion:hover {
+  background-color: #fce7f3; /* El rosa suave de "Diversión" */
+  transform: translateX(5px); /* Desplazamiento sutil a la derecha */
+}
+
+/* ESTADO ACTIVO: Cuando una sección está seleccionada */
+.boton-opcion.activa {
+  background-color: #fce1e6; /* Un rosa un pelín más intenso */
+  border-color: #f0c2cb;
+}
+
+/* 6. ICONOS Y TEXTO */
+.icono-caja {
+  width: 84px; /* Centra el icono en el espacio de 100px inicial */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.icono-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.texto-opcion {
+  font-family: serif;
+  font-size: 1.15rem;
+  color: #141824;
+  white-space: nowrap; /* Evita que el texto salte de línea */
+  opacity: 0; /* Invisible por defecto */
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* El texto aparece solo cuando la Sidebar se ensancha */
+.sidebar:hover .texto-opcion {
+  opacity: 1;
+  transition-delay: 0.1s; /* Espera un poco a que la barra abra para mostrarse */
+}
+
+.boton-opcion.activa .texto-opcion {
+  font-weight: bold;
+}
+
+/* 7. MENÚ INFERIOR: Para Info, Perfil, etc. */
+.menu-abajo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0 0.5rem;
+  margin-bottom: 1rem;
+}
