@@ -9,6 +9,27 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 
+// ==========================================
+// RUTA PARA OBTENER NOTICIAS DE FORMA SEGURA (NUEVO)
+// ==========================================
+app.get('/api/noticias', async (req, res) => {
+    try {
+        // Cogemos la llave secreta del archivo .env
+        const API_KEY = process.env.NEWS_API_KEY; 
+        const url = `https://newsapi.org/v2/everything?q=actualidad OR españa&language=es&sortBy=publishedAt&apiKey=${API_KEY}`;
+        
+        // El backend hace la petición a NewsAPI
+        const respuesta = await fetch(url);
+        const datos = await respuesta.json();
+        
+        // Le enviamos los datos limpios al frontend
+        res.json(datos);
+    } catch (error) {
+        console.error("❌ Error al pedir noticias:", error);
+        res.status(500).json({ error: 'Error interno pidiendo noticias' });
+    }
+});
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
@@ -48,7 +69,6 @@ io.on('connection', (socket) => {
         const { usuario, email, password } = data;
 
         try {
-            // Encriptamos la contraseña como dice tu modelo (Bcrypt)
             const salt = await bcrypt.genSalt(10);
             const hashedPass = await bcrypt.hash(password, salt);
 
@@ -76,7 +96,6 @@ io.on('connection', (socket) => {
         const { usuario, password } = data;
 
         try {
-            // Buscamos al usuario en la base de datos solo por su nombre
             const sql = "SELECT * FROM USUARIO WHERE usuario = ?";
             
             db.query(sql, [usuario], async (err, resultados) => {
@@ -86,7 +105,6 @@ io.on('connection', (socket) => {
                     return;
                 }
 
-                // Si resultados.length es 0, ese usuario no existe en la base de datos
                 if (resultados.length === 0) {
                     console.log("⚠️ Intento de login: Usuario no encontrado ->", usuario);
                     socket.emit('login_resultado', { success: false, message: 'El usuario no existe.' });
@@ -94,13 +112,10 @@ io.on('connection', (socket) => {
                 }
 
                 const usuarioEncontrado = resultados[0];
-
-                // Comparamos la contraseña que escribió con el hash guardado en MySQL
                 const contraseniaValida = await bcrypt.compare(password, usuarioEncontrado.constrasenia_hash);
 
                 if (contraseniaValida) {
                     console.log("✅ ¡Login exitoso para:", usuario);
-                    // Le devolvemos al frontend los datos (pero NUNCA la contraseña por seguridad)
                     socket.emit('login_resultado', { 
                         success: true, 
                         usuario: { 

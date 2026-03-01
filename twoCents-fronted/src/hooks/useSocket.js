@@ -1,1 +1,0 @@
-// El "motor" que te conectará al backend en tiempo real.

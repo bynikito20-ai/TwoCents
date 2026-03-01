@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
+
 
 // IMPORTACIONES DE LOS LOGOS
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
@@ -15,6 +17,12 @@ import iconUsuario from '../recursos/imagenes/avatar.png';
 
 // AQUÍ EL CAMBIO: Dejamos paginaActiva vacío ('') por defecto para que no marque nada
 export default function Sidebar({ paginaActiva = '' }) {
+  
+  // 👉 CAMBIO 1: Leemos el nombre directamente de la memoria. 
+  // (Le pongo "|| 'Usuario'" por si acaso alguien borra la memoria, que no se quede en blanco)
+  const [nombreUsuario] = useState(localStorage.getItem('usuarioLogeado') || 'Usuario');
+  const navigate = useNavigate();
+
   const menuOpciones = [
     { id: 1, nombre: 'Deportes', icono: iconDeportes },
     { id: 2, nombre: 'Debates', icono: iconDebates },
@@ -65,11 +73,12 @@ export default function Sidebar({ paginaActiva = '' }) {
           <span className="texto-opcion">Información</span>
         </button>
 
-        <button className="boton-opcion">
+        {/* 👉 AÑADIMOS EL onClick AQUÍ */}
+        <button className="boton-opcion" onClick={() => navigate('/perfil')}>
           <div className="icono-caja">
             <img src={iconUsuario} alt="Usuario" className="icono-img" />
           </div>
-          <span className="texto-opcion">[NomUsuario]</span>
+          <span className="texto-opcion">{nombreUsuario}</span>
         </button>
       </div>
     </aside>

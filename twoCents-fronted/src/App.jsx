@@ -1,13 +1,11 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// --- 1. IMPORTACIONES DE TU COMPAÑERO ---
 import IniciarSesion from './views/IniciarSesion';
 import Registro from './views/Registro';
-
-// --- 2. TUS NUEVAS IMPORTACIONES ---
 import Sidebar from './componentes/Sidebar';
 import Inicio from './views/Inicio';
+import Perfil from './views/Perfil';
 
 function App() {
   return (
@@ -16,6 +14,7 @@ function App() {
         {/* La ruta "/" es la principal. Entra directo al Login */}
         <Route path="/" element={<IniciarSesion />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path="/perfil" element={<Perfil />} />
 
         {/* Creamos la nueva ruta '/inicio' */}
         <Route
@@ -28,6 +27,17 @@ function App() {
             </div>
           }
         />
+
+        <Route
+          path="/perfil"
+          element={
+            <div className="flex w-full min-h-screen">
+              <Sidebar />
+              <Perfil />
+            </div>
+          }
+        />
+        
       </Routes>
     </BrowserRouter>
   );

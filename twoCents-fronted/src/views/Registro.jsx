@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import io from 'socket.io-client';
+import socket from '../servicios/useSocket';
 
 // Asegúrate de que la ruta a tu logo y tu CSS son correctas
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
 import './IniciarSesion.css'; // Usamos el mismo CSS para que la tarjeta se vea igual
-
-const socket = io('http://localhost:3001');
 
 export default function Registro() {
   const [usuario, setUsuario] = useState('');

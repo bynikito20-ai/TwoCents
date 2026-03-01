@@ -1,72 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Inicio.css';
 
+// 1. IMPORTAMOS LA FUNCIÓN DESDE TU NUEVA CARPETA DE SERVICIOS
+// (Ojo: Asegúrate de que la ruta '../servicios/peticionesApi' cuadra con tus carpetas. 
+// Si Inicio.jsx está en la misma carpeta que 'servicios', sería './servicios/peticionesApi')
+import { obtenerNoticias } from '../servicios/peticionesApi';
+
 export default function Inicio() {
+  const [noticias, setNoticias] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    console.log("📡 Pidiendo noticias a través de nuestro servicio...");
+
+    // 2. USAMOS LA FUNCIÓN LIMPIA EN LUGAR DE TODO EL FETCH
+    obtenerNoticias()
+      .then((datos) => {
+        console.log("📦 Paquete recibido del servidor:", datos); 
+
+        if (datos.articles && datos.articles.length > 0) {
+          setNoticias(datos.articles.slice(0, 12));
+        } else {
+          setError(`La API no envió noticias. Estado: ${datos.status}`);
+        }
+        setCargando(false);
+      })
+      .catch((err) => {
+        console.error("❌ Error en la conexión:", err);
+        setError("Falló la conexión con el servidor de noticias.");
+        setCargando(false);
+      });
+  }, []); 
+
   return (
     <div className="pagina-inicio">
       <h1 className="titulo-principal">LAS NOTICIAS DE HOY</h1>
 
-      <div className="contenedor-noticias">
-        {/* --- TARJETA 1 (Arriba Izquierda) --- */}
-        <article className="tarjeta-noticia">
-          <h2 className="noticia-titulo">
-            DAZN se queda con todo el Mundial 2026 en la tele de pago en España
-          </h2>
-          <img
-            src="https://heute-at-prod-images.imgix.net/2024/12/04/a22ca6ef-688e-47cb-a90f-f0ad55ad5a2e.jpeg?rect=0%2C342%2C4000%2C2250&auto=format"
-            alt="Mundial 2026"
-            className="noticia-imagen"
-          />
-          <div className="noticia-pie">
-            <button className="boton-ver-mas">Ver más</button>
-          </div>
-        </article>
+      {cargando && <h3 style={{ textAlign: 'center' }}>Cargando las últimas noticias... ⏳</h3>}
+      {error && <h3 style={{ color: 'red', textAlign: 'center' }}>Ups: {error}</h3>}
 
-        {/* --- TARJETA 2 (Arriba Derecha) --- */}
-        <article className="tarjeta-noticia">
-          <h2 className="noticia-titulo">
-            ¿Podrá Aston Martin F1 salir del bache? ¿Cuánto tiempo tardará?
-          </h2>
-          <img
-            src="https://cdn-8.motorsport.com/images/amp/YE9wNgMY/s1200/lance-stroll-aston-martin-raci.webp"
-            alt="Jugadores de fútbol"
-            className="noticia-imagen"
-          />
-          <div className="noticia-pie">
-            <button className="boton-ver-mas">Ver más</button>
-          </div>
-        </article>
+      {!cargando && !error && (
+        <div className="contenedor-noticias">
+          {noticias.map((noticia, index) => {
+            if (!noticia.title || noticia.title === '[Removed]') return null;
 
-        {/* --- TARJETA 3 (Abajo Izquierda) --- */}
-        <article className="tarjeta-noticia">
-          <h2 className="noticia-titulo">
-            Yolanda Díaz renuncia a ser la candidata de la izquierda confederal
-          </h2>
-          <img
-            src="https://imagenes.elpais.com/resizer/v2/3JD24VYZWFH6ZJ5CMKCZY6UAF4.jpg?auth=ea667dcfd63aa2f3dbed25372909bb791181bf946557093be070784bd2f3682c&width=414&height=233&smart=true"
-            alt="Fútbol"
-            className="noticia-imagen"
-          />
-          <div className="noticia-pie">
-            <button className="boton-ver-mas">Ver más</button>
-          </div>
-        </article>
-
-        {/* --- TARJETA 4 (Abajo Derecha) --- */}
-        <article className="tarjeta-noticia">
-          <h2 className="noticia-titulo">
-            Una tienda digital filtra el precio de GTA 6 para consola y PC
-          </h2>
-          <img
-            src="https://hardzone.es/app/uploads-hardzone.es/2026/02/cartel-anunciador-gta-6.jpg?quality=80"
-            alt="Tenis"
-            className="noticia-imagen"
-          />
-          <div className="noticia-pie">
-            <button className="boton-ver-mas">Ver más</button>
-          </div>
-        </article>
-      </div>
+            return (
+              <article key={index} className="tarjeta-noticia">
+                <h2 className="noticia-titulo">{noticia.title}</h2>
+                <img
+                  src={noticia.urlToImage || 'https://via.placeholder.com/400x225?text=Sin+Imagen'}
+                  alt="Imagen de la noticia"
+                  className="noticia-imagen"
+                />
+                <div className="noticia-pie">
+                  <a 
+                    href={noticia.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="boton-ver-mas"
+                    style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center' }}
+                  >
+                    Leer noticia
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

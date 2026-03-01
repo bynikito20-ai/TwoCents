@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import io from 'socket.io-client';
-
+import socket from '../servicios/useSocket'; // importacion del archivo de la conexion al servidor
 // Ajusta esta ruta si tu carpeta de imágenes está en otro sitio
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
 import './IniciarSesion.css'; 
 
-const socket = io('http://localhost:3001');
 
 export default function IniciarSesion() {
   const [usuario, setUsuario] = useState('');
@@ -19,6 +17,9 @@ export default function IniciarSesion() {
   useEffect(() => {
     socket.on('login_resultado', (respuesta) => {
       if (respuesta.success) {
+        
+        // 👉 AQUÍ ESTÁ EL CAMBIO: Guardamos el nombre del usuario en el navegador
+        localStorage.setItem('usuarioLogeado', respuesta.usuario.nombre);
         
         // AQUÍ ES DONDE PONEMOS EL MENSAJE DE BIENVENIDA CON SU NOMBRE
         setAlerta({ 
