@@ -80,3 +80,47 @@
   background-color: #dc2626;
 }
 
+.toggle {
+  width: 70px;
+  height: 35px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+/* Fondo modo claro */
+.toggle.light {
+  background: #e4e4e4;
+  justify-content: flex-start;
+}
+
+/* Fondo modo oscuro */
+.toggle.dark {
+  background: #1e1e1e;
+  justify-content: flex-end;
+}
+
+/* Círculo */
+.toggle .icon {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+/* En modo oscuro el círculo cambia */
+.toggle.dark .icon {
+  background: #333;
+  color: white;
+}
+

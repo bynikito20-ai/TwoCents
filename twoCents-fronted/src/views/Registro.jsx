@@ -4,7 +4,7 @@ import socket from '../servicios/useSocket';
 
 // Asegúrate de que la ruta a tu logo y tu CSS son correctas
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
-import './IniciarSesion.css'; // Usamos el mismo CSS para que la tarjeta se vea igual
+import './css/IniciarSesion.css'; // Usamos el mismo CSS para que la tarjeta se vea igual
 
 export default function Registro() {
   const [usuario, setUsuario] = useState('');

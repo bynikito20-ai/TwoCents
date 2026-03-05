@@ -6,6 +6,8 @@ import Registro from './views/Registro';
 import Sidebar from './componentes/Sidebar';
 import Inicio from './views/Inicio';
 import Perfil from './views/Perfil';
+import Informacion from './views/Informacion';
+import Diversion from './views/diversion';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/" element={<IniciarSesion />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/informacion" element={<Informacion />} />
+        <Route path="/diversion" element={<Diversion />} />
 
         {/* Creamos la nueva ruta '/inicio' */}
         <Route
@@ -28,16 +32,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/perfil"
-          element={
-            <div className="flex w-full min-h-screen">
-              <Sidebar />
-              <Perfil />
-            </div>
-          }
-        />
-        
       </Routes>
     </BrowserRouter>
   );

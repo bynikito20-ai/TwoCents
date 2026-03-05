@@ -24,13 +24,13 @@ export default function Sidebar({ paginaActiva = '' }) {
   const navigate = useNavigate();
 
   const menuOpciones = [
-    { id: 1, nombre: 'Deportes', icono: iconDeportes },
-    { id: 2, nombre: 'Debates', icono: iconDebates },
-    { id: 3, nombre: 'Actualidad', icono: iconActualidad },
-    { id: 4, nombre: 'Diversión', icono: iconDiversion },
-    { id: 5, nombre: 'Política', icono: iconPolitica },
-    { id: 6, nombre: 'Recuerdos', icono: iconRecuerdos },
-    { id: 7, nombre: 'Reflexión', icono: iconReflexion },
+    { id: 1, nombre: 'Deportes', icono: iconDeportes, ruta:'/deportes' },
+    { id: 2, nombre: 'Debates', icono: iconDebates, ruta:'/debates' },
+    { id: 3, nombre: 'Actualidad', icono: iconActualidad, ruta:'/actualidad' },
+    { id: 4, nombre: 'Diversión', icono: iconDiversion, ruta:'/diversion' },
+    { id: 5, nombre: 'Política', icono: iconPolitica, ruta:'/politica' },
+    { id: 6, nombre: 'Recuerdos', icono: iconRecuerdos, ruta:'/recuerdos' },
+    { id: 7, nombre: 'Reflexión', icono: iconReflexion, ruta:'/reflexion' },
   ];
 
   return (
@@ -49,6 +49,7 @@ export default function Sidebar({ paginaActiva = '' }) {
             <button
               key={opcion.id}
               className={`boton-opcion ${esActiva ? 'activa' : ''}`}
+              onClick={() => navigate(opcion.ruta)}
             >
               <div className="icono-caja">
                 <img
@@ -66,7 +67,7 @@ export default function Sidebar({ paginaActiva = '' }) {
       <hr className="separador" />
 
       <div className="menu-abajo">
-        <button className="boton-opcion">
+        <button className="boton-opcion" onClick={() => navigate('/informacion')}>
           <div className="icono-caja">
             <img src={iconInfo} alt="Información" className="icono-img" />
           </div>

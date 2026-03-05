@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import socket from '../servicios/useSocket'; // importacion del archivo de la conexion al servidor
 // Ajusta esta ruta si tu carpeta de imágenes está en otro sitio
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
-import './IniciarSesion.css'; 
+import './css/IniciarSesion.css';
 
 
 export default function IniciarSesion() {
@@ -20,6 +20,7 @@ export default function IniciarSesion() {
         
         // 👉 AQUÍ ESTÁ EL CAMBIO: Guardamos el nombre del usuario en el navegador
         localStorage.setItem('usuarioLogeado', respuesta.usuario.nombre);
+        localStorage.setItem('correoLogeado', respuesta.usuario.email);
         
         // AQUÍ ES DONDE PONEMOS EL MENSAJE DE BIENVENIDA CON SU NOMBRE
         setAlerta({ 
@@ -35,7 +36,7 @@ export default function IniciarSesion() {
 
       } else {
         
-        // ESTA ES LA LÍNEA QUE TÚ ESTABAS MIRANDO (LA DEL ERROR)
+        
         setAlerta({ 
             visible: true, 
             mensaje: respuesta.message, 
@@ -66,7 +67,6 @@ export default function IniciarSesion() {
               <h2 style={{ color: alerta.tipo === 'exito' ? '#a83250' : '#a83250' }}>
                 {alerta.tipo === 'exito' ? '¡Genial!' : 'Ups...'}
               </h2>
-              <p className="linea-divisoria">________________________</p>
               <p style={{ margin: '20px 0', fontSize: '18px', color: 'black' }}>{alerta.mensaje}</p>
               
               {alerta.tipo === 'error' && (

@@ -14,14 +14,16 @@
 /* Contenedor raíz: Distribución en fila (Sidebar + Main) */
 .page-layout {
   display: flex;
+  flex-direction: row;
   min-height: 100vh;
   background-color: var(--bg-color);
+  margin-left: 90px;
 }
 
 /* Área de contenido: Ocupa el espacio restante y permite scroll interno */
 .chat-container {
-  flex-grow: 1;
-  padding: 2rem;
+  flex: 1;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -46,6 +48,8 @@
   font-size: 2rem;
   margin: 0;
 }
+
+
 
 /* =========================================
    Botón de Acción Principal (Floating Action Button)

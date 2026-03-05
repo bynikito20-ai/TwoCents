@@ -1,6 +1,6 @@
 import React from 'react';
-import Sidebar from './Sidebar'; // Navegación lateral principal
-import './chats.css';          // Hoja de estilos de la vista
+import Sidebar from '../componentes/Sidebar.jsx'; // Navegación lateral principal
+import './css/chats.css';          // Hoja de estilos de la vista
 
 /**
  * Componente Diversion

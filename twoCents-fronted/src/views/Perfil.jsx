@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Perfil.css'; 
+import Sidebar from '../componentes/Sidebar.jsx';
+import './css/Perfil.css'; 
 
 export default function Perfil() {
   const navigate = useNavigate();
   // Recuperamos el nombre del usuario
-  const [nombreUsuario] = useState(localStorage.getItem('usuarioLogeado') || 'Usuario Desconocido');
+  const [nombreUsuario] = useState(localStorage.getItem('usuarioLogeado'));
+  const [correoUsuario] = useState(localStorage.getItem('correoLogeado'));
   const [modoOscuro, setModoOscuro] = useState(false);
 
   // 1. Al cargar la página, comprobamos si el usuario ya tenía el modo oscuro activado
@@ -38,6 +40,7 @@ export default function Perfil() {
 
   return (
     <div className="pagina-inicio"> {/* Usamos tu misma clase para mantener el estilo base */}
+      <Sidebar />
       <h1 className="titulo-principal">MI PERFIL</h1>
       
       <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto', backgroundColor: 'var(--fondo-tarjeta, #fff)', borderRadius: '10px' }}>
@@ -45,22 +48,25 @@ export default function Perfil() {
         {/* SECCIÓN: INFORMACIÓN DE LA CUENTA */}
         <h2> Información de la cuenta</h2>
         <p style={{ fontSize: '18px' }}><strong>Usuario:</strong> {nombreUsuario}</p>
+        <p style={{ fontSize: '18px' }}><strong>Correo:</strong> {correoUsuario}</p>
         
-        <hr style={{ margin: '20px 0' }} />
+        
 
         {/* SECCIÓN: APARIENCIA */}
-        <h2>🎨 Apariencia</h2>
+        <h2>Apariencia</h2>
         <button 
           onClick={cambiarTema}
-          style={{ padding: '10px 20px', cursor: 'pointer', fontSize: '16px', borderRadius: '5px' }}
+          className={`toggle ${modoOscuro ? "dark" : "light"}`}
         >
-          {modoOscuro ? '☀️ Cambiar a Modo Claro' : '🌙 Cambiar a Modo Oscuro'}
+          <div className="icon">
+            {modoOscuro ? "🌙" : "☀️"}
+          </div>
         </button>
 
-        <hr style={{ margin: '20px 0' }} />
+        
 
         {/* SECCIÓN: CERRAR SESIÓN */}
-        <h2>🚪 Sesión</h2>
+        <h2>Sesión</h2>
         <button 
           onClick={cerrarSesion}
           style={{ padding: '10px 20px', cursor: 'pointer', fontSize: '16px', backgroundColor: '#eb322c', color: 'white', border: 'none', borderRadius: '5px' }}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Inicio.css';
+import './css/Inicio.css';
 
 // 1. IMPORTAMOS LA FUNCIÓN DESDE TU NUEVA CARPETA DE SERVICIOS
 // (Ojo: Asegúrate de que la ruta '../servicios/peticionesApi' cuadra con tus carpetas. 
