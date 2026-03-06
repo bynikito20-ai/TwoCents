@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../componentes/Sidebar.jsx';
+import { ThemeToggle } from '../componentes/aspecto/ThemeToggle.jsx';
 import './css/Perfil.css'; 
 
 export default function Perfil() {
@@ -54,14 +55,10 @@ export default function Perfil() {
 
         {/* SECCIÓN: APARIENCIA */}
         <h2>Apariencia</h2>
-        <button 
-          onClick={cambiarTema}
-          className={`toggle ${modoOscuro ? "dark" : "light"}`}
-        >
-          <div className="icon">
-            {modoOscuro ? "🌙" : "☀️"}
-          </div>
-        </button>
+        <ThemeToggle 
+          modoOscuro={modoOscuro} 
+          cambiarTema={cambiarTema} 
+        />
 
         
 
@@ -69,7 +66,7 @@ export default function Perfil() {
         <h2>Sesión</h2>
         <button 
           onClick={cerrarSesion}
-          style={{ padding: '10px 20px', cursor: 'pointer', fontSize: '16px', backgroundColor: '#eb322c', color: 'white', border: 'none', borderRadius: '5px' }}
+          style={{ padding: '10px 20px', cursor: 'pointer', fontSize: '16px', backgroundColor: '#C53A55', color: 'white', border: 'none', borderRadius: '5px' }}
         >
           Cerrar Sesión
         </button>

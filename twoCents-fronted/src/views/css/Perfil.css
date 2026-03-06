@@ -72,12 +72,12 @@
 }
 
 .btn-cerrar-sesion {
-  background-color: #ef4444;
+  background-color: #C53A55;
   color: white;
 }
 
 .btn-cerrar-sesion:hover {
-  background-color: #dc2626;
+  background-color: #C53A55;
 }
 
 .toggle {

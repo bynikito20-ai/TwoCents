@@ -1,0 +1,48 @@
+/* Estilos globales del fondo de la página */
+body {
+  background-color: #ffffff;
+  color: #222;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el fondo */
+}
+
+body.modo-oscuro {
+  background-color: #121212;
+  color: white;
+}
+
+/* =========================================
+   ESTILOS DEL INTERRUPTOR (TOGGLE)
+   ========================================= */
+.toggle {
+  width: 70px;
+  height: 35px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 5px;
+  background: #e4e4e4;
+  transition: background 0.3s ease;
+}
+
+.toggle.dark {
+  background: #1e1e1e;
+}
+
+.circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  color: #333;
+}
+
+.toggle.dark .circle {
+  transform: translateX(4px);
+  background: #333;
+  color: white;
+}

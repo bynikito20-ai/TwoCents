@@ -114,3 +114,132 @@
   color: #64748b;
   font-size: 0.95rem;
 }
+
+/* =========================================
+   ESTILOS DEL MODAL (Crear Nueva Sala)
+   ========================================= */
+
+/* Fondo oscuro que cubre toda la pantalla */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo negro semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Nos aseguramos de que tape la barra lateral y todo lo demás */
+  backdrop-filter: blur(2px); /* Desenfoca un poquito el fondo (muy moderno) */
+}
+
+/* La ventana blanca central */
+.modal-contenido {
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: entrarSuave 0.3s ease-out forwards; /* Animación de entrada */
+}
+
+/* Título de la ventana */
+.modal-contenido h3 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #c92822; /* El rojo de tu marca para mantener coherencia */
+  font-size: 22px;
+}
+
+/* Contenedor de cada input y su texto */
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.campo-form label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Estilo de las cajas de texto */
+.campo-form input,
+.campo-form textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+/* Cuando haces clic para escribir (quita el borde azul por defecto y pone el tuyo) */
+.campo-form input:focus,
+.campo-form textarea:focus {
+  outline: none;
+  border-color: #c92822; 
+}
+
+.campo-form textarea {
+  resize: vertical; /* Solo deja hacerla más grande hacia abajo, no hacia los lados */
+  min-height: 100px;
+}
+
+/* La zona de los botones abajo a la derecha */
+.modal-botones {
+  display: flex;
+  justify-content: flex-end; /* Los empuja a la derecha */
+  gap: 12px; /* Separación entre botones */
+  margin-top: 10px;
+}
+
+/* Botón Gris (Cancelar) */
+.btn-cancelar {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.2s;
+}
+
+.btn-cancelar:hover {
+  background-color: #e2e8f0;
+}
+
+/* Botón Rojo (Crear Sala) */
+.btn-crear {
+  background-color: #c92822; 
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.2s;
+}
+
+.btn-crear:hover {
+  background-color: #a81d19; /* Un tono más oscuro al pasar el ratón */
+}
+
+/* Animación para que entre de abajo hacia arriba suavemente */
+@keyframes entrarSuave {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
