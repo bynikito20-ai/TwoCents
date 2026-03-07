@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../componentes/Sidebar.jsx';
+import Sidebar from '../componentes/sidebar.jsx';
 import { ThemeToggle } from '../componentes/aspecto/ThemeToggle.jsx';
-import './css/Perfil.css'; 
+import './css/Perfil.css';
 
 export default function Perfil() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function Perfil() {
     const nuevoEstado = !modoOscuro;
     setModoOscuro(nuevoEstado);
     localStorage.setItem('temaOscuro', nuevoEstado); // Lo guardamos para que no se borre al recargar
-    
+
     if (nuevoEstado) {
       document.body.classList.add('modo-oscuro');
     } else {
@@ -40,37 +40,49 @@ export default function Perfil() {
   };
 
   return (
-    <div className="pagina-inicio"> {/* Usamos tu misma clase para mantener el estilo base */}
+    <div className="pagina-inicio">
+      {' '}
+      {/* Usamos tu misma clase para mantener el estilo base */}
       <Sidebar />
       <h1 className="titulo-principal">MI PERFIL</h1>
-      
-      <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto', backgroundColor: 'var(--fondo-tarjeta, #fff)', borderRadius: '10px' }}>
-        
+      <div
+        style={{
+          padding: '20px',
+          maxWidth: '600px',
+          margin: '0 auto',
+          backgroundColor: 'var(--fondo-tarjeta, #fff)',
+          borderRadius: '10px',
+        }}
+      >
         {/* SECCIÓN: INFORMACIÓN DE LA CUENTA */}
         <h2> Información de la cuenta</h2>
-        <p style={{ fontSize: '18px' }}><strong>Usuario:</strong> {nombreUsuario}</p>
-        <p style={{ fontSize: '18px' }}><strong>Correo:</strong> {correoUsuario}</p>
-        
-        
+        <p style={{ fontSize: '18px' }}>
+          <strong>Usuario:</strong> {nombreUsuario}
+        </p>
+        <p style={{ fontSize: '18px' }}>
+          <strong>Correo:</strong> {correoUsuario}
+        </p>
 
         {/* SECCIÓN: APARIENCIA */}
         <h2>Apariencia</h2>
-        <ThemeToggle 
-          modoOscuro={modoOscuro} 
-          cambiarTema={cambiarTema} 
-        />
-
-        
+        <ThemeToggle modoOscuro={modoOscuro} cambiarTema={cambiarTema} />
 
         {/* SECCIÓN: CERRAR SESIÓN */}
         <h2>Sesión</h2>
-        <button 
+        <button
           onClick={cerrarSesion}
-          style={{ padding: '10px 20px', cursor: 'pointer', fontSize: '16px', backgroundColor: '#C53A55', color: 'white', border: 'none', borderRadius: '5px' }}
+          style={{
+            padding: '10px 20px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            backgroundColor: '#C53A55',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+          }}
         >
           Cerrar Sesión
         </button>
-
       </div>
     </div>
   );

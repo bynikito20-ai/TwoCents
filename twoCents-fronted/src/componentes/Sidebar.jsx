@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
-
-// IMPORTACIONES DE LOS LOGOS
+// IMPORTACIONES DE LOS LOGOS (Asegúrate de que coinciden con los nombres reales en tu carpeta)
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
 import iconDeportes from '../recursos/imagenes/deportes.png';
 import iconDebates from '../recursos/imagenes/Debate.png';
@@ -15,22 +14,21 @@ import iconReflexion from '../recursos/imagenes/Reflexivas.png';
 import iconInfo from '../recursos/imagenes/acerca-de.png';
 import iconUsuario from '../recursos/imagenes/avatar.png';
 
-// AQUÍ EL CAMBIO: Dejamos paginaActiva vacío ('') por defecto para que no marque nada
-export default function Sidebar({ paginaActiva = '' }) {
-  
-  // 👉 CAMBIO 1: Leemos el nombre directamente de la memoria. 
-  // (Le pongo "|| 'Usuario'" por si acaso alguien borra la memoria, que no se quede en blanco)
-  const [nombreUsuario] = useState(localStorage.getItem('usuarioLogeado') || 'Usuario');
-  const navigate = useNavigate();
+export default function Sidebar() {
+  // Leemos el nombre directamente de la memoria.
+  const [nombreUsuario] = useState(
+    localStorage.getItem('usuarioLogeado') || 'Usuario'
+  );
 
+  // 👉 RUTAS ACTUALIZADAS PARA COINCIDIR CON APP.JSX
   const menuOpciones = [
-    { id: 1, nombre: 'Deportes', icono: iconDeportes, ruta:'/deportes' },
-    { id: 2, nombre: 'Debates', icono: iconDebates, ruta:'/debates' },
-    { id: 3, nombre: 'Actualidad', icono: iconActualidad, ruta:'/actualidad' },
-    { id: 4, nombre: 'Diversión', icono: iconDiversion, ruta:'/diversion' },
-    { id: 5, nombre: 'Política', icono: iconPolitica, ruta:'/politica' },
-    { id: 6, nombre: 'Recuerdos', icono: iconRecuerdos, ruta:'/recuerdos' },
-    { id: 7, nombre: 'Reflexión', icono: iconReflexion, ruta:'/reflexion' },
+    { id: 1, nombre: 'Deportes', icono: iconDeportes, ruta: '/deportes' },
+    { id: 2, nombre: 'Debates', icono: iconDebates, ruta: '/debates' }, // 👈 En plural, como tu archivo debates.jsx
+    { id: 3, nombre: 'Actualidad', icono: iconActualidad, ruta: '/actualidad' },
+    { id: 4, nombre: 'Diversión', icono: iconDiversion, ruta: '/diversion' },
+    { id: 5, nombre: 'Política', icono: iconPolitica, ruta: '/politica' },
+    { id: 6, nombre: 'Recuerdos', icono: iconRecuerdos, ruta: '/recuerdos' },
+    { id: 7, nombre: 'Reflexión', icono: iconReflexion, ruta: '/reflexivas' },
   ];
 
   return (
@@ -42,45 +40,52 @@ export default function Sidebar({ paginaActiva = '' }) {
       <hr className="separador" />
 
       <nav className="menu-nav">
-        {menuOpciones.map((opcion) => {
-          const esActiva = opcion.nombre === paginaActiva;
-
-          return (
-            <button
-              key={opcion.id}
-              className={`boton-opcion ${esActiva ? 'activa' : ''}`}
-              onClick={() => navigate(opcion.ruta)}
-            >
-              <div className="icono-caja">
-                <img
-                  src={opcion.icono}
-                  alt={opcion.nombre}
-                  className="icono-img"
-                />
-              </div>
-              <span className="texto-opcion">{opcion.nombre}</span>
-            </button>
-          );
-        })}
+        {menuOpciones.map((opcion) => (
+          <NavLink
+            key={opcion.id}
+            to={opcion.ruta}
+            className={({ isActive }) =>
+              `boton-opcion ${isActive ? 'activa' : ''}`
+            }
+          >
+            <div className="icono-caja">
+              <img
+                src={opcion.icono}
+                alt={opcion.nombre}
+                className="icono-img"
+              />
+            </div>
+            <span className="texto-opcion">{opcion.nombre}</span>
+          </NavLink>
+        ))}
       </nav>
 
       <hr className="separador" />
 
       <div className="menu-abajo">
-        <button className="boton-opcion" onClick={() => navigate('/informacion')}>
+        <NavLink
+          to="/informacion"
+          className={({ isActive }) =>
+            `boton-opcion ${isActive ? 'activa' : ''}`
+          }
+        >
           <div className="icono-caja">
             <img src={iconInfo} alt="Información" className="icono-img" />
           </div>
           <span className="texto-opcion">Información</span>
-        </button>
+        </NavLink>
 
-        {/* 👉 AÑADIMOS EL onClick AQUÍ */}
-        <button className="boton-opcion" onClick={() => navigate('/perfil')}>
+        <NavLink
+          to="/perfil"
+          className={({ isActive }) =>
+            `boton-opcion ${isActive ? 'activa' : ''}`
+          }
+        >
           <div className="icono-caja">
             <img src={iconUsuario} alt="Usuario" className="icono-img" />
           </div>
           <span className="texto-opcion">{nombreUsuario}</span>
-        </button>
+        </NavLink>
       </div>
     </aside>
   );

@@ -1,38 +1,39 @@
 import React from 'react';
 import Sidebar from '../componentes/sidebar'; // Ajusta la ruta si Sidebar está en otra carpeta
 import './css/chats.css';
-// IMPORTANTE: Importamos la imagen para que Vite sepa dónde está y la empaquete correctamente
-import iconoDiversion from '../recursos/imagenes/Diversion.png';
+// IMPORTANTE: Importamos la imagen de política correcta
+import iconoPolitica from '../recursos/imagenes/Politica.png';
 
-const Diversion = () => {
-  const chatsDiversion = [
+const Politica = () => {
+  // Lista de chats de ejemplo con temática de política sin notificaciones
+  const chatsPolitica = [
     {
       id: 1,
-      title: 'Grupo con ByNikito y h3ctoor',
-      lastMsg: '¿Qué prefieres ser un halcón o un tiburón?',
-      unread: 0, // <- Cambiado a 0 (quita el número)
-      hasUpdate: false, // <- Cambiado a false (quita el punto rojo)
+      title: 'Debate Elecciones 2024',
+      lastMsg: '¿Quién creéis que ganará los próximos comicios locales?',
+      unread: 0,
+      hasUpdate: false,
     },
     {
       id: 2,
-      title: 'Grupo de clase 1ºA!!!!',
+      title: 'Políticas Medioambientales 🌱',
       lastMsg:
-        '¿Que opinais de la presentación del grupo 4? No ha sido super graciosa??',
+        'La nueva ley de emisiones va a cambiar muchas cosas en la ciudad.',
       unread: 0,
       hasUpdate: false,
     },
     {
       id: 3,
-      title: 'Los gamers',
-      lastMsg: 'Han vuelto a atrasar el GTA VI !!!!!',
+      title: 'Economía y Fiscalidad',
+      lastMsg:
+        'He estado leyendo sobre la reforma de los tipos de interés. ¿Opiniones?',
       unread: 0,
       hasUpdate: false,
     },
     {
       id: 4,
-      title: 'One Piece Fans',
-      lastMsg:
-        'Que pedazo de episodio el de esta semana!!, Decirme que ya lo habeis visto por dios.',
+      title: 'Actualidad Parlamentaria',
+      lastMsg: '¿Habéis visto la sesión de control al gobierno de esta mañana?',
       unread: 0,
       hasUpdate: false,
     },
@@ -43,18 +44,16 @@ const Diversion = () => {
       <Sidebar />
 
       <main className="chat-container">
-        {/* Veo en tu captura que tienes un fondo rojo en el header. 
-            Si lo añadiste en un div externo, mantenlo. Yo te dejo la estructura base. */}
         <header className="chat-header">
-          <h1>Mis Chats de Diversión</h1>
+          <h1>Mis Chats de Política</h1>
         </header>
 
         <section className="chat-list">
-          {chatsDiversion.map((chat) => (
+          {chatsPolitica.map((chat) => (
             <div key={chat.id} className="chat-card">
               <div className="chat-icon-wrapper">
-                {/* Usamos la variable de la imagen que importamos arriba */}
-                <img src={iconoDiversion} alt="Icono Diversión" />
+                {/* Usamos el icono de Política */}
+                <img src={iconoPolitica} alt="Icono Política" />
                 {chat.hasUpdate && <div className="status-dot"></div>}
               </div>
 
@@ -63,6 +62,7 @@ const Diversion = () => {
                 <p>{chat.lastMsg}</p>
               </div>
 
+              {/* Si hay mensajes sin leer, mostramos el contador (ahora oculto) */}
               {chat.unread > 0 && (
                 <div className="msg-count">{chat.unread}</div>
               )}
@@ -74,7 +74,9 @@ const Diversion = () => {
           className="btn-add-chat"
           title="Crear nuevo chat"
           onClick={() =>
-            alert('Pronto crearemos el formulario para nuevos chats')
+            alert(
+              'Pronto crearemos el formulario para nuevos debates políticos'
+            )
           }
         >
           +
@@ -84,4 +86,4 @@ const Diversion = () => {
   );
 };
 
-export default Diversion;
+export default Politica;

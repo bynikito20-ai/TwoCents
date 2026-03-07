@@ -1,6 +1,8 @@
 /* src/componentes/Sidebar.css */
 
-/* 1. CONTENEDOR PRINCIPAL: Controla el ancho y el desplazamiento */
+/* =========================================
+   1. CONTENEDOR PRINCIPAL
+   ========================================= */
 .sidebar {
   position: fixed;
   top: 0;
@@ -9,15 +11,15 @@
   width: 100px; /* Ancho inicial (solo iconos) */
   background-color: white;
   border-right: 1px solid #d1d5db;
-  transition: width 0.3s ease-in-out; /* Animación de apertura suave */
-  overflow-y: auto; /* Scroll vertical si hay muchos iconos */
-  overflow-x: hidden; /* Evita que el texto asome antes de tiempo */
+  transition: width 0.3s ease-in-out;
+  overflow-y: auto;
+  overflow-x: hidden;
   z-index: 50;
   display: flex;
   flex-direction: column;
 }
 
-/* Oculta la barra de scroll para que no afee el diseño */
+/* Oculta la barra de scroll */
 .sidebar::-webkit-scrollbar {
   display: none;
 }
@@ -27,7 +29,9 @@
   width: 270px;
 }
 
-/* 2. LOGO: Espacio superior para la marca */
+/* =========================================
+   2. LOGO Y SEPARADORES
+   ========================================= */
 .sidebar-logo-caja {
   margin-top: 1rem;
   height: 3rem;
@@ -42,7 +46,6 @@
   object-fit: contain;
 }
 
-/* 3. SEPARADOR: La línea horizontal que crece al abrir la barra */
 .separador {
   width: 50px;
   margin: 1rem auto;
@@ -54,48 +57,77 @@
 .sidebar:hover .separador {
   width: 210px;
 }
-
-/* 4. MENÚ DE NAVEGACIÓN: Agrupa los botones */
+/* =========================================
+   3. MENÚ DE NAVEGACIÓN
+   ========================================= */
 .menu-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.95rem;
-  padding: 0 0.5rem;
+  gap: 0.8rem;
+  padding: 0; /* 👉 Quitamos el padding para evitar que lo empuje a la derecha */
   flex: 1;
   justify-content: space-evenly;
   margin-top: 1rem;
 }
 
-/* 5. BOTONES DE OPCIÓN: El corazón de la Sidebar */
+.menu-abajo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0; /* 👉 Igual aquí */
+  margin-bottom: 1.5rem;
+}
+
+/* =========================================
+   4. BOTONES / ENLACES (El corazón de la Sidebar)
+   ========================================= */
 .boton-opcion {
   display: flex;
   align-items: center;
   height: 50px;
-  border-radius: 1rem;
+  width: 80px; /* 👉 Reducido a 80px para que encaje perfecto en la barra de 100px */
+  margin: 0 auto; /* 👉 LA CLAVE: Esto lo centra matemáticamente de forma automática */
+  border-radius: 25px;
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.2s ease; /* Transición para color y transformación */
-  min-width: 250px;
-  text-align: left;
+  transition:
+    width 0.3s ease-in-out,
+    background-color 0.2s,
+    transform 0.2s;
+  overflow: hidden;
+  text-decoration: none;
+  color: #141824;
   padding: 0;
 }
 
-/* HOVER: Aquí aplicamos el rosa flojito que pediste */
+/* TAMAÑO ABIERTO: Cuando pasas el ratón por la Sidebar */
+.sidebar:hover .boton-opcion {
+  width: 240px; /* 👉 240px deja 15px de aire a cada lado al abrirse (270px total) */
+}
+
+/* HOVER: Efecto al pasar el ratón (sin estar activo) */
 .boton-opcion:hover {
-  background-color: #fce7f3; /* El rosa suave de "Diversión" */
-  transform: translateX(5px); /* Desplazamiento sutil a la derecha */
+  background-color: #f9f9f9;
+  transform: translateX(3px);
 }
 
-/* ESTADO ACTIVO: Cuando una sección está seleccionada */
+/* ESTADO ACTIVO: Pestaña marcada */
 .boton-opcion.activa {
-  background-color: #fce1e6; /* Un rosa un pelín más intenso */
-  border-color: #f0c2cb;
+  background-color: #fceceb;
+  border: 1px solid #1a1a1a;
+  transform: none; /* Anula el movimiento para que se quede firme */
 }
 
-/* 6. ICONOS Y TEXTO */
+.boton-opcion.activa .texto-opcion {
+  font-weight: bold;
+}
+
+/* =========================================
+   5. ICONOS Y TEXTO
+   ========================================= */
 .icono-caja {
-  width: 84px; /* Centra el icono en el espacio de 100px inicial */
+  width: 80px; /* 👉 Debe medir EXACTAMENTE lo mismo que el botón cerrado (80px) */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,35 +135,20 @@
 }
 
 .icono-img {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
 }
 
 .texto-opcion {
-  font-family: serif;
+  font-family: 'Georgia', serif;
   font-size: 1.15rem;
-  color: #141824;
-  white-space: nowrap; /* Evita que el texto salte de línea */
-  opacity: 0; /* Invisible por defecto */
+  white-space: nowrap;
+  opacity: 0;
   transition: opacity 0.2s ease-in-out;
 }
 
-/* El texto aparece solo cuando la Sidebar se ensancha */
 .sidebar:hover .texto-opcion {
   opacity: 1;
-  transition-delay: 0.1s; /* Espera un poco a que la barra abra para mostrarse */
-}
-
-.boton-opcion.activa .texto-opcion {
-  font-weight: bold;
-}
-
-/* 7. MENÚ INFERIOR: Para Info, Perfil, etc. */
-.menu-abajo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  padding: 0 0.5rem;
-  margin-bottom: 1rem;
+  transition-delay: 0.1s;
 }
