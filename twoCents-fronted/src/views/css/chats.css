@@ -145,3 +145,137 @@
   transform: scale(1.1);
   background-color: #6b1425;
 }
+
+
+/* =========================================
+   ESTILOS DEL MODAL DE CREAR SALA
+   ========================================= */
+
+/* El fondo oscuro que difumina la página */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Oscurece el fondo 60% */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Para que quede por encima de todo */
+  backdrop-filter: blur(3px); /* Le da un toque borroso moderno al fondo */
+}
+
+/* La tarjeta blanca del formulario */
+.modal-contenido {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: aparecerModal 0.3s ease-out;
+}
+
+/* Animación para que entre de forma suave */
+@keyframes aparecerModal {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-contenido h3 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #333;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+/* Estilos de los inputs y etiquetas */
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.campo-form label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.campo-form input,
+.campo-form textarea {
+  padding: 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.campo-form input:focus,
+.campo-form textarea:focus {
+  outline: none;
+  border-color: #c4274c; /* Color rojizo parecido al de tu menú */
+  box-shadow: 0 0 0 3px rgba(196, 39, 76, 0.15);
+}
+
+.campo-form textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+/* Campos deshabilitados (como el de Categoría) */
+.campo-form input:disabled {
+  background-color: #f5f5f5;
+  color: #888;
+  cursor: not-allowed;
+  border-color: #eee;
+}
+
+/* Contenedor de los botones */
+.modal-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* Botones genéricos */
+.modal-botones button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-botones button:active {
+  transform: scale(0.96); /* Efecto de clic */
+}
+
+/* Botón Cancelar */
+.btn-cancelar {
+  background-color: #f1f1f1;
+  color: #555;
+}
+
+.btn-cancelar:hover {
+  background-color: #e4e4e4;
+}
+
+/* Botón Crear */
+.btn-crear {
+  background-color: #c4274c; /* El color principal de tu app */
+  color: white;
+  box-shadow: 0 4px 10px rgba(196, 39, 76, 0.3);
+}
+
+.btn-crear:hover {
+  background-color: #a31f3e;
+  box-shadow: 0 6px 12px rgba(196, 39, 76, 0.4);
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import './Sidebar.css';
 
 // IMPORTACIONES DE LOS LOGOS (Asegúrate de que coinciden con los nombres reales en tu carpeta)
@@ -34,7 +34,9 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo-caja">
-        <img src={logoTwoCents} alt="TwoCents" className="sidebar-logo" />
+        <Link to="/inicio">
+          <img src={logoTwoCents} alt="TwoCents" className="sidebar-logo" />
+        </Link> 
       </div>
 
       <hr className="separador" />
