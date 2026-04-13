@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Sidebar from '../componentes/sidebar';
+import React, { useState, useEffect } from 'react';import { useNavigate } from 'react-router-dom';import Sidebar from '../componentes/sidebar';
 import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de reflexivas correcta
 import iconoReflexivas from '../recursos/imagenes/Reflexivas.png';
@@ -84,10 +83,9 @@ const Reflexivas = () => {
     }
   };
 
-  // Función temporal para cuando programes la entrada a la sala de chat
+  // Función para navegar a la sala de chat
   const entrarASala = (id) => {
-    console.log(`Navegando a la sala con ID: ${id}`);
-    // Aquí irá tu lógica de navegación, ej: navigate(`/chat/${id}`);
+    navigate(`/sala/${id}`);
   };
 
   return (

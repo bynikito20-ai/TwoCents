@@ -1,0 +1,341 @@
+/* =========================================
+   CHATROOM - COMPONENTE DE SALA DE CHAT
+   Metodología BEM
+   ========================================= */
+
+.chatroom {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.chatroom__container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Sección de mensajes */
+.chatroom__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #f8f9fa;
+}
+
+/* Mensaje individual */
+.chatroom__message {
+  display: flex;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mensaje propio - alineado a la derecha */
+.chatroom__message--propio {
+  justify-content: flex-end;
+}
+
+/* Mensaje de otro - alineado a la izquierda */
+.chatroom__message--otro {
+  justify-content: flex-start;
+}
+
+/* Burbuja del mensaje */
+.chatroom__bubble {
+  max-width: 70%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  word-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chatroom__message--propio .chatroom__bubble {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.chatroom__message--otro .chatroom__bubble {
+  background: #e9ecef;
+  color: #212529;
+  border-bottom-left-radius: 4px;
+}
+
+/* Nombre del usuario (solo para mensajes de otros) */
+.chatroom__username {
+  font-weight: 600;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.chatroom__message--otro .chatroom__username {
+  color: #495057;
+}
+
+.chatroom__message--propio .chatroom__username {
+  display: none;
+}
+
+/* Contenido del mensaje */
+.chatroom__content {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+/* Timestamp */
+.chatroom__timestamp {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  text-align: right;
+}
+
+.chatroom__message--propio .chatroom__timestamp {
+  opacity: 0.8;
+}
+
+/* Estado vacío */
+.chatroom__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.chatroom__empty p {
+  margin: 0;
+}
+
+/* Loading */
+.chatroom__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #495057;
+  font-size: 1.1rem;
+}
+
+.chatroom__loading p {
+  margin: 0;
+}
+
+/* Error */
+.chatroom__error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #dc3545;
+  font-size: 1rem;
+  padding: 20px;
+  text-align: center;
+}
+
+.chatroom__error p {
+  margin: 0;
+}
+
+/* Indicador de "escribiendo..." */
+.chatroom__typing-indicator {
+  padding: 12px 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-style: italic;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.chatroom__typing-indicator p {
+  margin: 0;
+}
+
+/* Formulario de envío */
+.chatroom__form {
+  padding: 16px 20px;
+  background: white;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  gap: 12px;
+}
+
+.chatroom__input-wrapper {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  align-items: center;
+}
+
+/* Input de mensaje */
+.chatroom__input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.chatroom__input:focus {
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.chatroom__input:disabled {
+  background: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Botón de envío */
+.chatroom__button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.chatroom__button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+}
+
+.chatroom__button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.chatroom__button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 768px) {
+  .chatroom {
+    height: 100vh;
+  }
+
+  .chatroom__container {
+    border-radius: 0;
+  }
+
+  .chatroom__messages {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .chatroom__bubble {
+    max-width: 85%;
+    padding: 10px 14px;
+  }
+
+  .chatroom__form {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .chatroom__input {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .chatroom__button {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatroom__bubble {
+    max-width: 95%;
+  }
+
+  .chatroom__content {
+    font-size: 0.9rem;
+  }
+
+  .chatroom__timestamp {
+    font-size: 0.7rem;
+  }
+
+  .chatroom__input-wrapper {
+    gap: 6px;
+  }
+
+  .chatroom__button {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* =========================================
+   SCROLLBAR PERSONALIZADO (navegadores WebKit)
+   ========================================= */
+
+.chatroom__messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chatroom__messages::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+.chatroom__messages::-webkit-scrollbar-thumb {
+  background: #d0d8e0;
+  border-radius: 4px;
+}
+
+.chatroom__messages::-webkit-scrollbar-thumb:hover {
+  background: #a0a8b0;
+}

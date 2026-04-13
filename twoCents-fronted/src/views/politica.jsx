@@ -84,10 +84,9 @@ const Politica = () => {
     }
   };
 
-  // Función temporal para cuando programes la entrada a la sala de chat
+  // Función para navegar a la sala de chat
   const entrarASala = (id) => {
-    console.log(`Navegando a la sala con ID: ${id}`);
-    // Aquí irá tu lógica de navegación, ej: navigate(`/chat/${id}`);
+    navigate(`/sala/${id}`);
   };
 
   return (

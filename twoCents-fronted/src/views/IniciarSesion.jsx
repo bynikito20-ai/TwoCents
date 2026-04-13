@@ -18,9 +18,8 @@ export default function IniciarSesion() {
     socket.on('login_resultado', (respuesta) => {
       if (respuesta.success) {
         
-        // 👉 AQUÍ ESTÁ EL CAMBIO: Guardamos el nombre del usuario en el navegador
-        localStorage.setItem('usuarioLogeado', respuesta.usuario.nombre);
-        localStorage.setItem('correoLogeado', respuesta.usuario.email);
+        // 👉 AQUÍ ESTÁ EL CAMBIO: Guardamos todo el usuario como JSON (incluyendo id_usuario)
+        localStorage.setItem('usuarioLogeado', JSON.stringify(respuesta.usuario));
         
         // AQUÍ ES DONDE PONEMOS EL MENSAJE DE BIENVENIDA CON SU NOMBRE
         setAlerta({ 

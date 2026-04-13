@@ -15,10 +15,11 @@ import iconInfo from '../recursos/imagenes/acerca-de.png';
 import iconUsuario from '../recursos/imagenes/avatar.png';
 
 export default function Sidebar() {
-  // Leemos el nombre directamente de la memoria.
-  const [nombreUsuario] = useState(
-    localStorage.getItem('usuarioLogeado') || 'Usuario'
-  );
+  // Leemos el usuario del localStorage (ahora es JSON)
+  const usuarioJSON = localStorage.getItem('usuarioLogeado');
+  const usuario = usuarioJSON ? JSON.parse(usuarioJSON) : null;
+  
+  const [nombreUsuario] = useState(usuario?.nombre || 'Usuario');
 
   // 👉 RUTAS ACTUALIZADAS PARA COINCIDIR CON APP.JSX
   const menuOpciones = [

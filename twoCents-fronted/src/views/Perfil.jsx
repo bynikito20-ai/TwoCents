@@ -6,9 +6,13 @@ import './css/Perfil.css';
 
 export default function Perfil() {
   const navigate = useNavigate();
-  // Recuperamos el nombre del usuario
-  const [nombreUsuario] = useState(localStorage.getItem('usuarioLogeado'));
-  const [correoUsuario] = useState(localStorage.getItem('correoLogeado'));
+  
+  // Recuperamos el usuario del localStorage (ahora es JSON)
+  const usuarioJSON = localStorage.getItem('usuarioLogeado');
+  const usuario = usuarioJSON ? JSON.parse(usuarioJSON) : null;
+  
+  const [nombreUsuario] = useState(usuario?.nombre || 'Usuario');
+  const [correoUsuario] = useState(usuario?.email || '');
   const [modoOscuro, setModoOscuro] = useState(false);
 
   // 1. Al cargar la página, comprobamos si el usuario ya tenía el modo oscuro activado
@@ -19,6 +23,13 @@ export default function Perfil() {
       document.body.classList.add('modo-oscuro'); // Le ponemos una clase al <body>
     }
   }, []);
+
+  useEffect(() => {
+    // Si no hay usuario en el localStorage, lo mandamos al login inmediatamente
+    if (!usuarioJSON) {
+      navigate('/', { replace: true }); 
+    }
+  }, [navigate, usuarioJSON]);
 
   // 2. Función para alternar entre claro y oscuro
   const cambiarTema = () => {
@@ -36,7 +47,8 @@ export default function Perfil() {
   // 3. Función para cerrar sesión (la hemos movido aquí)
   const cerrarSesion = () => {
     localStorage.removeItem('usuarioLogeado');
-    navigate('/'); // Te devuelve a la pantalla de Login
+    localStorage.removeItem('correoLogeado');
+    navigate('/', { replace: true }); // Reemplaza la entrada en el historial para evitar volver atrás
   };
 
   return (

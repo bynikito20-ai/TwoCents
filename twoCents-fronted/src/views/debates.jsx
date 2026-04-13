@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../componentes/sidebar';
 import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de debates correcta
 import iconoDebates from '../recursos/imagenes/Debate.png';
 
 const Debates = () => {
+  const navigate = useNavigate();
   // Lista de chats de ejemplo con temática de debates
   const [chatsDebates, setChatsDebates] = useState([]);
 
@@ -85,10 +87,9 @@ const Debates = () => {
     }
   };
 
-  // Función temporal para cuando programes la entrada a la sala de chat
+  // Función para navegar a la sala de chat
   const entrarASala = (id) => {
-    console.log(`Navegando a la sala con ID: ${id}`);
-    // Aquí irá tu lógica de navegación, ej: navigate(`/chat/${id}`);
+    navigate(`/sala/${id}`);
   };
 
   return (
