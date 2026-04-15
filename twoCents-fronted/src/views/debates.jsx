@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../componentes/sidebar';
+import { useTemaOscuro } from '../contexto/useTemaOscuro';
 import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de debates correcta
 import iconoDebates from '../recursos/imagenes/Debate.png';
+import iconoDebatesGris from '../recursos/imagenes/Debate_Gris.png';
+
+const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Debates = () => {
   const navigate = useNavigate();
+  const modoOscuro = useTemaOscuro();
   // Lista de chats de ejemplo con temática de debates
   const [chatsDebates, setChatsDebates] = useState([]);
 
@@ -19,13 +24,14 @@ const Debates = () => {
         try {
           const respuesta = await fetch('http://localhost:3001/api/salas/debates');
           const salasBD = await respuesta.json();
+          const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
   
           const salasFormateadas = salasBD.map(sala => ({
             id: sala.id_sala,
             title: sala.nombre,
             desc: sala.descripcion,
-            unread: 0,
-            hasUpdate: false,
+            unread: noLeidos[sala.id_sala] || 0,
+            hasUpdate: (noLeidos[sala.id_sala] || 0) > 0,
             tipo: sala.tipo
           }));
   
@@ -38,6 +44,21 @@ const Debates = () => {
       cargarSalas();
     }, []);
 
+  useEffect(() => {
+    const actualizarNoLeidos = () => {
+      const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
+      setChatsDebates((salasActuales) =>
+        salasActuales.map((sala) => ({
+          ...sala,
+          unread: noLeidos[sala.id] || 0,
+          hasUpdate: (noLeidos[sala.id] || 0) > 0,
+        }))
+      );
+    };
+
+    window.addEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
+    return () => window.removeEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
+  }, []);
 
   const crearSala = async (e) => {
     e.preventDefault(); // Evita que se recargue la página
@@ -88,8 +109,18 @@ const Debates = () => {
   };
 
   // Función para navegar a la sala de chat
-  const entrarASala = (id) => {
-    navigate(`/sala/${id}`);
+  const entrarASala = (id, nombre) => {
+    const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
+    noLeidos[id] = 0;
+    localStorage.setItem(CLAVE_NO_LEIDOS_SALAS, JSON.stringify(noLeidos));
+
+    setChatsDebates((salasActuales) =>
+      salasActuales.map((sala) =>
+        sala.id === id ? { ...sala, unread: 0, hasUpdate: false } : sala
+      )
+    );
+
+    navigate(`/sala/${id}`, { state: { nombreSala: nombre } });
   };
 
   return (
@@ -106,13 +137,13 @@ const Debates = () => {
             <div 
               key={chat.id} 
               className="chat-card"
-              onClick={() => entrarASala(chat.id)}
+              onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >
               
               <div className="chat-icon-wrapper">
                 {/* Usamos el icono de Debates */}
-                <img src={iconoDebates} alt="Icono Debates" />
+                <img src={modoOscuro ? iconoDebatesGris : iconoDebates} alt="Icono Debates" />
                 {chat.hasUpdate && <div className="status-dot"></div>}
               </div>
 

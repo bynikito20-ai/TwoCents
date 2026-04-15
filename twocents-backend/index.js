@@ -10,6 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Evita procesar dos veces el mismo mensaje cuando hay doble emit casi simultaneo.
+const mensajesProcesadosGlobal = new Set();
+const huellasMensajesRecientes = new Map();
+
 // ==========================================
 // RUTA PARA CREAR UNA NUEVA SALA (NUEVO)
 // ==========================================
@@ -58,6 +62,27 @@ app.get('/api/salas/:tipo', (req, res) => {
         
         // Le enviamos las salas encontradas a React
         res.json(resultados);
+    });
+});
+
+// ==========================================
+// RUTA PARA OBTENER UNA SALA POR ID
+// ==========================================
+app.get('/api/sala/:idSala', (req, res) => {
+    const idSala = req.params.idSala;
+    const sql = "SELECT id_sala, nombre, descripcion, tipo FROM SALA WHERE id_sala = ? LIMIT 1";
+
+    db.query(sql, [idSala], (err, resultados) => {
+        if (err) {
+            console.error("❌ Error al cargar sala por ID:", err);
+            return res.status(500).json({ success: false, message: 'Error en la base de datos' });
+        }
+
+        if (!resultados || resultados.length === 0) {
+            return res.status(404).json({ success: false, message: 'Sala no encontrada' });
+        }
+
+        res.json(resultados[0]);
     });
 });
 
@@ -146,6 +171,7 @@ db.connect((err) => {
 // LÓGICA DE SOCKETS
 // ==========================================
 io.on('connection', (socket) => {
+    const mensajesProcesados = new Set();
     console.log('👤 Nuevo cliente conectado:', socket.id);
 
     // ------------------------------------------
@@ -228,6 +254,12 @@ io.on('connection', (socket) => {
     socket.on('unirse_chat', (data) => {
         // data contiene { id_sala, id_usuario, nombre_usuario }
         const idSala = data.id_sala || data; // Por si enviamos solo el idSala
+
+        if (socket.data?.salaActual && socket.data.salaActual !== idSala) {
+            socket.leave(socket.data.salaActual);
+        }
+        socket.data = socket.data || {};
+        socket.data.salaActual = idSala;
         
         // socket.join() agrupa a los usuarios en una "habitación" específica
         // para que los mensajes no se mezclen con otras salas.
@@ -235,37 +267,113 @@ io.on('connection', (socket) => {
         console.log(`💬 ${data.nombre_usuario || 'Usuario'} se unió a la sala: ${idSala}`);
     });
 
+    socket.on('salir_chat', (data) => {
+        const idSala = data?.id_sala;
+        if (!idSala) {
+            return;
+        }
+
+        socket.leave(idSala);
+        if (socket.data?.salaActual === idSala) {
+            socket.data.salaActual = null;
+        }
+    });
+
     // ------------------------------------------
     // 5. ENVIAR Y RECIBIR MENSAJES EN TIEMPO REAL
     // ------------------------------------------
     socket.on('enviar_mensaje', (data) => {
         // Estos son los datos que React nos manda cuando alguien pulsa "Enviar"
-        const { id_sala, id_usuario, contenido, nombre_usuario, hora_envio } = data;
+        const { client_msg_id, id_sala, id_usuario, contenido, nombre_usuario, hora_envio } = data;
 
-        // 1. Guardamos el mensaje en tu tabla 'mensaje' de MySQL
-        const sql = "INSERT INTO mensaje (id_sala, id_usuario, contenido, hora_envio) VALUES (?, ?, ?, ?)";
-        
-        db.query(sql, [id_sala, id_usuario, contenido, hora_envio || new Date()], (err, result) => {
-            if (err) {
-                console.error("❌ Error al guardar mensaje:", err);
+        const contenidoNormalizado = (contenido || '').trim();
+        if (!contenidoNormalizado) {
+            return;
+        }
+
+        // Deduplicacion global por id de mensaje del cliente (entre sockets tambien).
+        if (client_msg_id && mensajesProcesadosGlobal.has(client_msg_id)) {
+            return;
+        }
+        if (client_msg_id) {
+            mensajesProcesadosGlobal.add(client_msg_id);
+            setTimeout(() => mensajesProcesadosGlobal.delete(client_msg_id), 30000);
+        }
+
+        // Deduplicacion por huella semantica para dobles emits casi simultaneos.
+        const huellaMensaje = `${id_sala}|${id_usuario}|${contenidoNormalizado}`;
+        const ahora = Date.now();
+        const ultimoEnvio = huellasMensajesRecientes.get(huellaMensaje);
+        if (ultimoEnvio && ahora - ultimoEnvio < 1500) {
+            return;
+        }
+        huellasMensajesRecientes.set(huellaMensaje, ahora);
+        setTimeout(() => {
+            if (huellasMensajesRecientes.get(huellaMensaje) === ahora) {
+                huellasMensajesRecientes.delete(huellaMensaje);
+            }
+        }, 10000);
+
+        if (client_msg_id && mensajesProcesados.has(client_msg_id)) {
+            return;
+        }
+        if (client_msg_id) {
+            mensajesProcesados.add(client_msg_id);
+            setTimeout(() => mensajesProcesados.delete(client_msg_id), 30000);
+        }
+
+        // Evita duplicados inmediatos del mismo mensaje (doble submit o doble socket emit)
+        const sqlDuplicado = `
+            SELECT id_mensaje
+            FROM mensaje
+            WHERE id_sala = ? AND id_usuario = ? AND contenido = ?
+              AND hora_envio >= DATE_SUB(NOW(), INTERVAL 2 SECOND)
+            ORDER BY id_mensaje DESC
+            LIMIT 1
+        `;
+
+        db.query(sqlDuplicado, [id_sala, id_usuario, contenidoNormalizado], (dupErr, duplicados) => {
+            if (dupErr) {
+                console.error("❌ Error comprobando duplicado:", dupErr);
                 return;
             }
-            
-            console.log(`✅ Mensaje guardado en sala ${id_sala}`);
-            
-            // 2. Si se guardó bien, emitimos el evento 'recibir_mensaje' incluyendo el id del mensaje
-            const mensajeCompleto = {
-                id_mensaje: result.insertId,
-                id_sala,
-                id_usuario,
-                contenido,
-                nombre_usuario,
-                hora_envio: hora_envio || new Date().toISOString()
-            };
-            
-            // io.to(id_sala) asegura que el mensaje SOLO le llegue a los 
-            // usuarios que están dentro de esta sala, y no a toda la web.
-            io.to(id_sala).emit('recibir_mensaje', mensajeCompleto);
+
+            if (Array.isArray(duplicados) && duplicados.length > 0) {
+                return;
+            }
+
+            // 1. Guardamos el mensaje en tu tabla 'mensaje' de MySQL
+            const sql = "INSERT INTO mensaje (id_sala, id_usuario, contenido, hora_envio) VALUES (?, ?, ?, ?)";
+
+            db.query(sql, [id_sala, id_usuario, contenidoNormalizado, hora_envio || new Date()], (err, result) => {
+                if (err) {
+                    console.error("❌ Error al guardar mensaje:", err);
+                    return;
+                }
+
+                console.log(`✅ Mensaje guardado en sala ${id_sala}`);
+
+                // 2. Si se guardó bien, emitimos el evento 'recibir_mensaje' incluyendo el id del mensaje
+                const mensajeCompleto = {
+                    id_mensaje: result.insertId,
+                    id_sala,
+                    id_usuario,
+                    contenido: contenidoNormalizado,
+                    nombre_usuario,
+                    hora_envio: hora_envio || new Date().toISOString()
+                };
+
+                // Evento global para notificaciones fuera del chat
+                io.emit('mensaje_nuevo_notificacion', {
+                    id_sala,
+                    id_usuario,
+                    hora_envio: mensajeCompleto.hora_envio
+                });
+
+                // io.to(id_sala) asegura que el mensaje SOLO le llegue a los
+                // usuarios que están dentro de esta sala, y no a toda la web.
+                io.to(id_sala).emit('recibir_mensaje', mensajeCompleto);
+            });
         });
     });
 
@@ -277,6 +385,7 @@ io.on('connection', (socket) => {
         // data contiene { id_sala, id_usuario, nombre_usuario }
         // socket.to() lo envía a todos en la sala EXCEPTO al que está escribiendo
         socket.to(data.id_sala).emit('alguien_escribiendo', {
+            id_sala: data.id_sala,
             id_usuario: data.id_usuario,
             nombre_usuario: data.nombre_usuario
         });
@@ -285,6 +394,7 @@ io.on('connection', (socket) => {
     socket.on('dejo_de_escribir', (data) => {
         // data contiene { id_sala, id_usuario }
         socket.to(data.id_sala).emit('alguien_dejo_escribir', {
+            id_sala: data.id_sala,
             id_usuario: data.id_usuario
         });
     });

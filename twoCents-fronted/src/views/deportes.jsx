@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../componentes/sidebar';
+import { useTemaOscuro } from '../contexto/useTemaOscuro';
 import './css/chats.css';
 // IMPORTANTE: Ajusta la ruta de la imagen si tu carpeta se llama distinto
 import iconoDeportes from '../recursos/imagenes/deportes.png';
+import iconoDeportesGris from '../recursos/imagenes/deportes_Gris.png';
+
+const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Deportes = () => {
+  const navigate = useNavigate();
+  const modoOscuro = useTemaOscuro();
   // 1. ESTADO DE LOS CHATS (Iniciamos con algunos de prueba para que no se vea vacío)
   const [chatsDeportes, setChatsDeportes] = useState([]);
 
@@ -18,13 +25,14 @@ const Deportes = () => {
       try {
         const respuesta = await fetch('http://localhost:3001/api/salas/deportes');
         const salasBD = await respuesta.json();
+        const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
 
         const salasFormateadas = salasBD.map(sala => ({
           id: sala.id_sala,
           title: sala.nombre,
           desc: sala.descripcion,
-          unread: 0,
-          hasUpdate: false,
+          unread: noLeidos[sala.id_sala] || 0,
+          hasUpdate: (noLeidos[sala.id_sala] || 0) > 0,
           tipo: sala.tipo
         }));
 
@@ -35,6 +43,22 @@ const Deportes = () => {
     };
 
     cargarSalas();
+  }, []);
+
+  useEffect(() => {
+    const actualizarNoLeidos = () => {
+      const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
+      setChatsDeportes((salasActuales) =>
+        salasActuales.map((sala) => ({
+          ...sala,
+          unread: noLeidos[sala.id] || 0,
+          hasUpdate: (noLeidos[sala.id] || 0) > 0,
+        }))
+      );
+    };
+
+    window.addEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
+    return () => window.removeEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
   }, []);
 
   // 3. FUNCIÓN PARA CREAR LA SALA EN LA BASE DE DATOS
@@ -87,8 +111,20 @@ const Deportes = () => {
   };
 
   // Función para navegar a la sala de chat
-  const entrarASala = (id) => {
-    navigate(`/sala/${id}`);
+  const entrarASala = (id, nombre) => {
+    const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
+    noLeidos[id] = 0;
+    localStorage.setItem(CLAVE_NO_LEIDOS_SALAS, JSON.stringify(noLeidos));
+
+    setChatsDeportes((salasActuales) =>
+      salasActuales.map((sala) =>
+        sala.id === id
+          ? { ...sala, unread: 0, hasUpdate: false }
+          : sala
+      )
+    );
+
+    navigate(`/sala/${id}`, { state: { nombreSala: nombre } });
   };
 
   return (
@@ -106,11 +142,11 @@ const Deportes = () => {
             <div 
               key={chat.id} 
               className="chat-card" 
-              onClick={() => entrarASala(chat.id)}
+              onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >
               <div className="chat-icon-wrapper">
-                <img src={iconoDeportes} alt="Icono Deportes" />
+                <img src={modoOscuro ? iconoDeportesGris : iconoDeportes} alt="Icono Deportes" />
                 {chat.hasUpdate && <div className="status-dot"></div>}
               </div>
 

@@ -1,4 +1,5 @@
 // src/App.jsx
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // 1. OJO AQUÍ: Si también pusiste sidebar.jsx en minúscula, déjalo así.
@@ -27,6 +28,11 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+  useEffect(() => {
+    const temaOscuroGuardado = localStorage.getItem('temaOscuro') === 'true';
+    document.body.classList.toggle('modo-oscuro', temaOscuroGuardado);
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

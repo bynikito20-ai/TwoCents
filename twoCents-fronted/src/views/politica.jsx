@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../componentes/sidebar'; // Ajusta la ruta si Sidebar está en otra carpeta
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../componentes/sidebar';
+import { useTemaOscuro } from '../contexto/useTemaOscuro';
 import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de política correcta
 import iconoPolitica from '../recursos/imagenes/Politica.png';
+import iconoPoliticaGris from '../recursos/imagenes/Politica_Gris.png';
+
+const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Politica = () => {
+  const navigate = useNavigate();
+  const modoOscuro = useTemaOscuro();
   // Lista de chats de ejemplo con temática de política sin notificaciones
   const [chatsPolitica, setChatsPolitica] = useState([]);
 
@@ -17,13 +24,14 @@ const Politica = () => {
         try {
           const respuesta = await fetch('http://localhost:3001/api/salas/politica');
           const salasBD = await respuesta.json();
+          const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
   
           const salasFormateadas = salasBD.map(sala => ({
             id: sala.id_sala,
             title: sala.nombre,
             desc: sala.descripcion,
-            unread: 0,
-            hasUpdate: false,
+            unread: noLeidos[sala.id_sala] || 0,
+            hasUpdate: (noLeidos[sala.id_sala] || 0) > 0,
             tipo: sala.tipo
           }));
   
@@ -35,6 +43,22 @@ const Politica = () => {
   
       cargarSalas();
     }, []);
+
+  useEffect(() => {
+    const actualizarNoLeidos = () => {
+      const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
+      setChatsPolitica((salasActuales) =>
+        salasActuales.map((sala) => ({
+          ...sala,
+          unread: noLeidos[sala.id] || 0,
+          hasUpdate: (noLeidos[sala.id] || 0) > 0,
+        }))
+      );
+    };
+
+    window.addEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
+    return () => window.removeEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
+  }, []);
 
      const crearSala = async (e) => {
     e.preventDefault(); // Evita que se recargue la página
@@ -85,8 +109,18 @@ const Politica = () => {
   };
 
   // Función para navegar a la sala de chat
-  const entrarASala = (id) => {
-    navigate(`/sala/${id}`);
+  const entrarASala = (id, nombre) => {
+    const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
+    noLeidos[id] = 0;
+    localStorage.setItem(CLAVE_NO_LEIDOS_SALAS, JSON.stringify(noLeidos));
+
+    setChatsPolitica((salasActuales) =>
+      salasActuales.map((sala) =>
+        sala.id === id ? { ...sala, unread: 0, hasUpdate: false } : sala
+      )
+    );
+
+    navigate(`/sala/${id}`, { state: { nombreSala: nombre } });
   };
 
   return (
@@ -103,12 +137,12 @@ const Politica = () => {
             <div 
               key={chat.id} 
               className="chat-card" 
-              onClick={() => entrarASala(chat.id)}
+              onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >
               <div className="chat-icon-wrapper">
                 {/* Usamos el icono de Política */}
-                <img src={iconoPolitica} alt="Icono Política" />
+                <img src={modoOscuro ? iconoPoliticaGris : iconoPolitica} alt="Icono Política" />
                 {chat.hasUpdate && <div className="status-dot"></div>}
               </div>
 

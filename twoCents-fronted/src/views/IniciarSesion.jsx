@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import socket from '../servicios/useSocket'; // importacion del archivo de la conexion al servidor
+import { useTemaOscuro } from '../contexto/useTemaOscuro';
 // Ajusta esta ruta si tu carpeta de imágenes está en otro sitio
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
+import logoTwoCentsGris from '../recursos/imagenes/LogoTwoCents_ConLetras.png';
 import './css/IniciarSesion.css';
 
 
 export default function IniciarSesion() {
+  const modoOscuro = useTemaOscuro();
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
   const [alerta, setAlerta] = useState({visible: false, mensaje: '', tipo: ''});
@@ -66,7 +69,7 @@ export default function IniciarSesion() {
               <h2 style={{ color: alerta.tipo === 'exito' ? '#a83250' : '#a83250' }}>
                 {alerta.tipo === 'exito' ? '¡Genial!' : 'Ups...'}
               </h2>
-              <p style={{ margin: '20px 0', fontSize: '18px', color: 'black' }}>{alerta.mensaje}</p>
+              <p className="alerta-mensaje">{alerta.mensaje}</p>
               
               {alerta.tipo === 'error' && (
                 <button 
@@ -82,7 +85,7 @@ export default function IniciarSesion() {
         {/* ----------------------------------------------------- */}
 
         <div className='cabecera-registro'>
-          <img src={logoTwoCents} alt="logoTwoCents" className='logo'/>
+          <img src={modoOscuro ? logoTwoCentsGris : logoTwoCents} alt="logoTwoCents" className='logo'/>
           <h1>Inicio de Sesión</h1>  
         </div>
         
@@ -114,7 +117,7 @@ export default function IniciarSesion() {
           </button>
         </form>
         
-        <p style={{ marginTop: '20px', fontSize: '14px', color: 'black' }}>
+        <p className="auth-switch-text">
           ¿No tienes cuenta? <Link className='link' to="/registro">Regístrate</Link>
         </p>
       </div>

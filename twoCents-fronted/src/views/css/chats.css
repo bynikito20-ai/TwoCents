@@ -4,6 +4,10 @@
   --text-dark: #1a1a1a;
 }
 
+body.modo-oscuro {
+  --bg-light: #0f172a;
+}
+
 .page-layout {
   display: flex;
   min-height: 100vh;
@@ -44,7 +48,7 @@
 
 /* 2. Aseguramos que la tarjeta se adapte perfectamente */
 .chat-card {
-  background: white;
+  background: var(--fondo-tarjeta, white);
   border-radius: 10px;
   padding: 15px 25px;
   display: flex;
@@ -89,7 +93,7 @@
   position: absolute;
   top: -2px;
   right: -2px;
-  border: 2px solid white;
+  border: 2px solid var(--fondo-tarjeta, white);
 }
 
 .chat-info {
@@ -99,12 +103,12 @@
 .chat-info h3 {
   margin: 0;
   font-size: 1.1rem;
-  color: var(--text-dark);
+  color: var(--texto-principal, var(--text-dark));
 }
 
 .chat-info p {
   margin: 5px 0 0;
-  color: #777;
+  color: var(--texto-secundario, #777);
   font-size: 0.9rem;
 }
 
@@ -168,7 +172,7 @@
 
 /* La tarjeta blanca del formulario */
 .modal-contenido {
-  background-color: #ffffff;
+  background-color: var(--fondo-tarjeta, #ffffff);
   padding: 30px;
   border-radius: 16px;
   width: 90%;
@@ -186,7 +190,7 @@
 .modal-contenido h3 {
   margin-top: 0;
   margin-bottom: 25px;
-  color: #333;
+  color: var(--texto-principal, #333);
   font-size: 1.4rem;
   text-align: center;
 }
@@ -201,18 +205,20 @@
 .campo-form label {
   font-weight: 600;
   margin-bottom: 8px;
-  color: #555;
+  color: var(--texto-principal, #555);
   font-size: 0.95rem;
 }
 
 .campo-form input,
 .campo-form textarea {
   padding: 12px;
-  border: 1.5px solid #ddd;
+  border: 1.5px solid var(--borde-suave, #ddd);
   border-radius: 10px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.2s ease;
+  background: var(--fondo-pagina, #ffffff);
+  color: var(--texto-principal, #1f2937);
 }
 
 .campo-form input:focus,
@@ -229,10 +235,10 @@
 
 /* Campos deshabilitados (como el de Categoría) */
 .campo-form input:disabled {
-  background-color: #f5f5f5;
-  color: #888;
+  background-color: var(--fondo-opcion-hover, #f5f5f5);
+  color: var(--texto-secundario, #888);
   cursor: not-allowed;
-  border-color: #eee;
+  border-color: var(--borde-suave, #eee);
 }
 
 /* Contenedor de los botones */
@@ -260,8 +266,8 @@
 
 /* Botón Cancelar */
 .btn-cancelar {
-  background-color: #f1f1f1;
-  color: #555;
+  background-color: var(--fondo-opcion-hover, #f1f1f1);
+  color: var(--texto-principal, #555);
 }
 
 .btn-cancelar:hover {

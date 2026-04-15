@@ -1,15 +1,3 @@
-/* Estilos globales del fondo de la página */
-body {
-  background-color: #ffffff;
-  color: #222;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el fondo */
-}
-
-body.modo-oscuro {
-  background-color: #121212;
-  color: white;
-}
-
 /* =========================================
    ESTILOS DEL INTERRUPTOR (TOGGLE)
    ========================================= */

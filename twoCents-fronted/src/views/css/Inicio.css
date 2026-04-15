@@ -5,7 +5,7 @@
   margin-left: 100px; /* Deja espacio para la Sidebar fija */
   padding: 3rem 4rem; /* Aire alrededor del contenido */
   min-height: 100vh; /* Que el fondo cubra toda la pantalla */
-  background-color: #f3f4f6; /* Gris clarito de fondo */
+  background-color: var(--fondo-pagina, #f3f4f6); /* Gris clarito de fondo */
 }
 
 /* 2. TÍTULO PRINCIPAL */
@@ -13,7 +13,7 @@
   font-family: serif;
   font-size: 2.5rem;
   text-align: center; /* Centrado en su hueco */
-  color: #141824;
+  color: var(--texto-principal, #141824);
   margin-bottom: 3rem; /* Separación con las noticias */
 }
 
@@ -30,7 +30,7 @@
 
 /* 4. LA TARJETA (Cada noticia individual) */
 .tarjeta-noticia {
-  background-color: white;
+  background-color: var(--fondo-tarjeta, white);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -48,7 +48,7 @@
 .noticia-titulo {
   font-family: serif;
   font-size: 1.4rem;
-  color: #141824;
+  color: var(--texto-principal, #141824);
   margin-bottom: 1.5rem; /* Separación con la imagen */
   line-height: 1.3;
 }

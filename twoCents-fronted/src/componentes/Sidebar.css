@@ -9,8 +9,8 @@
   left: 0;
   height: 100vh;
   width: 100px; /* Ancho inicial (solo iconos) */
-  background-color: white;
-  border-right: 1px solid #d1d5db;
+  background-color: var(--fondo-sidebar, #ffffff);
+  border-right: 1px solid var(--borde-suave, #d1d5db);
   transition: width 0.3s ease-in-out;
   overflow-y: auto;
   overflow-x: hidden;
@@ -50,7 +50,7 @@
   width: 50px;
   margin: 1rem auto;
   border: 0;
-  border-top: 1px solid #d1d5db;
+  border-top: 1px solid var(--borde-suave, #d1d5db);
   transition: width 0.3s;
 }
 
@@ -97,7 +97,7 @@
     transform 0.2s;
   overflow: hidden;
   text-decoration: none;
-  color: #141824;
+  color: var(--texto-principal, #141824);
   padding: 0;
 }
 
@@ -108,19 +108,25 @@
 
 /* HOVER: Efecto al pasar el ratón (sin estar activo) */
 .boton-opcion:hover {
-  background-color: #f9f9f9;
+  background-color: var(--fondo-opcion-hover, #f9f9f9);
   transform: translateX(3px);
 }
 
 /* ESTADO ACTIVO: Pestaña marcada */
 .boton-opcion.activa {
-  background-color: #fceceb;
-  border: 1px solid #1a1a1a;
+  background-color: var(--fondo-opcion-activa, #fceceb);
+  border: 1px solid var(--texto-principal, #1a1a1a);
   transform: none; /* Anula el movimiento para que se quede firme */
 }
 
 .boton-opcion.activa .texto-opcion {
   font-weight: bold;
+}
+
+body.modo-oscuro .boton-opcion.activa {
+  background-color: #c83a56;
+  border: 1px solid #c83a56;
+  color: #ffffff;
 }
 
 /* =========================================

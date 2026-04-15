@@ -8,7 +8,7 @@ const Informacion = () => {
       <Sidebar />
 
       {/* Usamos una etiqueta <main> para el contenido y que pueda hacer scroll si es muy largo */}
-      <main style={{ flexGrow: 1, overflowY: 'auto', padding: '2rem' }}>
+      <main className="informacion-main">
         <header>
           <h1>TwoCents</h1>
           <p>Autores: Nicolas Cirstea y Héctor Carbajo</p>
@@ -107,17 +107,14 @@ const Informacion = () => {
             {/* Fíjate cómo el atributo style ahora es un objeto en JSX */}
             <a
               href="https://github.com/bynikito20-ai/TwoCents"
-              className="btn"
-              style={{ background: '#333', color: 'white', marginLeft: '10px' }}
+              className="btn btn--github"
             >
               Ver Repositorio (GitHub)
             </a>
           </section>
         </div>
 
-        <footer
-          style={{ marginTop: '3rem', textAlign: 'center', color: '#666' }}
-        >
+        <footer className="informacion-footer">
           <p>&copy; 2026 - I.E.S Santiago Hernández</p>
         </footer>
       </main>

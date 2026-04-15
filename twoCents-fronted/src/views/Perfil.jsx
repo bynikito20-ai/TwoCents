@@ -42,6 +42,8 @@ export default function Perfil() {
     } else {
       document.body.classList.remove('modo-oscuro');
     }
+
+    window.dispatchEvent(new CustomEvent('tema-cambiado', { detail: nuevoEstado }));
   };
 
   // 3. Función para cerrar sesión (la hemos movido aquí)

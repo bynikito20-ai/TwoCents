@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import socket from '../../servicios/useSocket';
 import './ChatRoom.css';
 
+const CLAVE_SALA_ACTUAL = 'salaChatActual';
+
 export default function ChatRoom() {
   const { idSala } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   
   // Estados
   const [mensajes, setMensajes] = useState([]);
@@ -14,13 +18,17 @@ export default function ChatRoom() {
   const [error, setError] = useState(null);
   const [usuariosEscribiendo, setUsuariosEscribiendo] = useState([]);
   const [estoyEscribiendo, setEstoyEscribiendo] = useState(false);
+  const [nombreSala, setNombreSala] = useState(location.state?.nombreSala || 'Cargando sala...');
   
   // Ref para auto-scroll al final de los mensajes
   const messagesEndRef = useRef(null);
   const timeoutEscrituraRef = useRef(null);
+  const ultimoEnvioRef = useRef({ firma: '', timestamp: 0 });
 
   // Al montar el componente: cargar usuario, historial y conectar a socket
   useEffect(() => {
+    localStorage.setItem(CLAVE_SALA_ACTUAL, String(idSala));
+
     const cargarDatos = async () => {
       try {
         // 1. Obtener usuario del localStorage
@@ -40,6 +48,20 @@ export default function ChatRoom() {
         }
         const mensajesDB = await respuesta.json();
         setMensajes(Array.isArray(mensajesDB) ? mensajesDB : []);
+
+        // 2.5 Cargar el nombre de la sala para el header
+        try {
+          const respuestaSala = await fetch(`http://localhost:3001/api/sala/${idSala}`);
+          if (respuestaSala.ok) {
+            const sala = await respuestaSala.json();
+            setNombreSala(sala?.nombre || `Sala ${idSala}`);
+          } else {
+            setNombreSala(`Sala ${idSala}`);
+          }
+        } catch {
+          setNombreSala(`Sala ${idSala}`);
+        }
+
         setCargando(false);
 
         // 3. Emitir evento de unirse a la sala
@@ -59,15 +81,19 @@ export default function ChatRoom() {
 
     // Limpiar al desmontar
     return () => {
-      socket.off('recibir_mensaje');
-      socket.off('alguien_escribiendo');
-      socket.off('alguien_dejo_escribir');
+      socket.emit('salir_chat', { id_sala: idSala });
+      if (localStorage.getItem(CLAVE_SALA_ACTUAL) === String(idSala)) {
+        localStorage.removeItem(CLAVE_SALA_ACTUAL);
+      }
     };
   }, [idSala]);
 
   // Escuchar evento de nuevo mensaje
   useEffect(() => {
     const manejarMensaje = (mensaje) => {
+      if (Number(mensaje.id_sala) !== Number(idSala)) {
+        return;
+      }
       setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
       // Limpiar la lista de "escribiendo" cuando llega un mensaje
       setUsuariosEscribiendo([]);
@@ -76,11 +102,14 @@ export default function ChatRoom() {
     socket.on('recibir_mensaje', manejarMensaje);
 
     return () => socket.off('recibir_mensaje', manejarMensaje);
-  }, []);
+  }, [idSala]);
 
   // Escuchar evento de alguien escribiendo
   useEffect(() => {
-    const manejarEscribiendo = ({ id_usuario, nombre_usuario }) => {
+    const manejarEscribiendo = ({ id_sala, id_usuario, nombre_usuario }) => {
+      if (Number(id_sala) !== Number(idSala)) {
+        return;
+      }
       setUsuariosEscribiendo((prev) => {
         // Evitar duplicados
         if (prev.find((u) => u.id_usuario === id_usuario)) {
@@ -93,11 +122,14 @@ export default function ChatRoom() {
     socket.on('alguien_escribiendo', manejarEscribiendo);
 
     return () => socket.off('alguien_escribiendo', manejarEscribiendo);
-  }, []);
+  }, [idSala]);
 
   // Escuchar evento de alguien dejó de escribir
   useEffect(() => {
-    const manejarDejóDeEscribir = ({ id_usuario }) => {
+    const manejarDejóDeEscribir = ({ id_sala, id_usuario }) => {
+      if (Number(id_sala) !== Number(idSala)) {
+        return;
+      }
       setUsuariosEscribiendo((prev) =>
         prev.filter((u) => u.id_usuario !== id_usuario)
       );
@@ -106,7 +138,7 @@ export default function ChatRoom() {
     socket.on('alguien_dejo_escribir', manejarDejóDeEscribir);
 
     return () => socket.off('alguien_dejo_escribir', manejarDejóDeEscribir);
-  }, []);
+  }, [idSala]);
 
   // Auto-scroll al final cuando llegan nuevos mensajes
   useEffect(() => {
@@ -159,12 +191,31 @@ export default function ChatRoom() {
       return;
     }
 
+     const contenidoNormalizado = nuevoMensaje.trim();
+     const firmaEnvio = `${idSala}-${usuarioActual.id_usuario}-${contenidoNormalizado}`;
+     const ahora = Date.now();
+
+     if (
+       ultimoEnvioRef.current.firma === firmaEnvio &&
+       ahora - ultimoEnvioRef.current.timestamp < 1500
+     ) {
+       return;
+     }
+
+     ultimoEnvioRef.current = {
+       firma: firmaEnvio,
+       timestamp: ahora,
+     };
+
+    const clientMsgId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+
     // Emitir evento de enviar mensaje
     socket.emit('enviar_mensaje', {
+      client_msg_id: clientMsgId,
       id_sala: idSala,
       id_usuario: usuarioActual.id_usuario,
       nombre_usuario: usuarioActual.nombre,
-      contenido: nuevoMensaje.trim(),
+      contenido: contenidoNormalizado,
       hora_envio: new Date().toISOString(),
     });
 
@@ -213,6 +264,17 @@ export default function ChatRoom() {
 
   return (
     <div className="chatroom">
+      <div className="chatroom__header">
+        <button 
+          className="chatroom__back-button"
+          onClick={() => navigate(-1)}
+          title="Volver atrás"
+        >
+          ← ATRÁS
+        </button>
+        <h2 className="chatroom__title">{nombreSala}</h2>
+        <div className="chatroom__header-spacer" aria-hidden="true"></div>
+      </div>
       <div className="chatroom__container">
         {/* Lista de mensajes */}
         <div className="chatroom__messages">

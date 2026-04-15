@@ -1,1 +1,40 @@
-/* estilos base de tu página */
+/* Variables globales del tema claro */
+:root {
+	--fondo-pagina: #f8f9fa;
+	--fondo-tarjeta: #ffffff;
+	--texto-principal: #1f2937;
+	--texto-secundario: #6b7280;
+	--borde-suave: #d1d5db;
+	--fondo-sidebar: #ffffff;
+	--fondo-opcion-hover: #f3f4f6;
+	--fondo-opcion-activa: #fceceb;
+}
+
+/* Variables globales del tema oscuro */
+body.modo-oscuro {
+	--fondo-pagina: #10141d;
+	--fondo-tarjeta: #171f2e;
+	--texto-principal: #f3f4f6;
+	--texto-secundario: #cbd5e1;
+	--borde-suave: #334155;
+	--fondo-sidebar: #0f172a;
+	--fondo-opcion-hover: #1f2937;
+	--fondo-opcion-activa: #3d1f2b;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	background-color: var(--fondo-pagina);
+	color: var(--texto-principal);
+	transition: background-color 0.25s ease, color 0.25s ease;
+}

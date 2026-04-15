@@ -1,17 +1,26 @@
 :root {
             --primary: #c83a56;
             --accent: #c83a56;
-            --text: #333;
-            --bg: #f4f7f6;
+            --text: var(--texto-principal, #333);
+            --bg: var(--fondo-pagina, #f4f7f6);
         }
 
-        body {
+        .page-layout {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text);
             background-color: var(--bg);
-            margin: 0;
-            padding: 0;
+            min-height: 100vh;
+        }
+
+        .informacion-main {
+            margin-left: 100px;
+            width: calc(100vw - 100px);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-y: auto;
+            color: var(--texto-principal);
+            box-sizing: border-box;
         }
 
         header {
@@ -22,7 +31,7 @@
         }
 
         nav {
-            background: #fff;
+            background: var(--fondo-tarjeta, #fff);
             padding: 1rem;
             text-align: center;
             position: sticky;
@@ -38,12 +47,14 @@
         }
 
         .container {
-            max-width: 800px;
-            margin: 2rem auto;
+            width: 100%;
+            max-width: none;
+            margin: 2rem 0;
             padding: 0 1rem;
-            background: white;
+            background: var(--fondo-tarjeta, white);
             padding: 2rem;
             border-radius: 8px;
+            box-sizing: border-box;
         }
 
         h2 {
@@ -66,5 +77,24 @@
             text-align: center;
             padding: 2rem;
             font-size: 0.9rem;
-            color: #777;
+            color: var(--texto-secundario, #777);
+        }
+
+        .informacion-footer {
+            margin-top: 3rem;
+        }
+
+        .btn--github {
+            background: #333;
+            color: white;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 800px) {
+            .informacion-main {
+                margin-left: 0;
+                width: 100vw;
+                margin-top: 80px;
+                padding: 1.25rem;
+            }
         }

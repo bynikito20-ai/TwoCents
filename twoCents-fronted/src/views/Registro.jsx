@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import socket from '../servicios/useSocket';
+import { useTemaOscuro } from '../contexto/useTemaOscuro';
 
 // Asegúrate de que la ruta a tu logo y tu CSS son correctas
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
+import logoTwoCentsGris from '../recursos/imagenes/LogoTwoCents_ConLetras.png';
 import './css/IniciarSesion.css'; // Usamos el mismo CSS para que la tarjeta se vea igual
 
 export default function Registro() {
+  const modoOscuro = useTemaOscuro();
   const [usuario, setUsuario] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -60,7 +63,7 @@ export default function Registro() {
                 {alerta.tipo === 'exito' ? '¡Genial!' : 'Ups...'}
               </h2>
               <p className="linea-divisoria">________________________</p>
-              <p style={{ margin: '20px 0', fontSize: '18px', color: 'black' }}>{alerta.mensaje}</p>
+              <p className="alerta-mensaje">{alerta.mensaje}</p>
               
               {alerta.tipo === 'error' && (
                 <button 
@@ -76,7 +79,7 @@ export default function Registro() {
         {/* ---------------------------------- */}
 
         <div className='cabecera-registro'>
-          <img src={logoTwoCents} alt="logoTwoCents" className='logo'/>
+          <img src={modoOscuro ? logoTwoCentsGris : logoTwoCents} alt="logoTwoCents" className='logo'/>
           <h1>Registrase</h1>  
         </div>
         
@@ -121,7 +124,7 @@ export default function Registro() {
           </button>
         </form>
         
-        <p style={{ marginTop: '20px', fontSize: '14px', color: 'black' }}>
+        <p className="auth-switch-text">
           ¿Ya tienes cuenta? <Link className='link' to="/">Inicia Sesión</Link>
         </p>
       </div>

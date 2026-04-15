@@ -7,20 +7,71 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, var(--fondo-pagina, #f5f7fa) 0%, #c3cfe2 100%);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Header del chatroom con botón atrás */
+.chatroom__header {
+  padding: 12px 20px;
+  background: var(--fondo-tarjeta, white);
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Botón atrás */
+.chatroom__back-button {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #d61d5b 0%, #8b1c31 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(214, 29, 91, 0.3);
+}
+
+.chatroom__back-button:hover {
+  transform: translateX(-2px);
+  box-shadow: 0 4px 12px rgba(214, 29, 91, 0.5);
+}
+
+.chatroom__back-button:active {
+  transform: translateX(0);
+}
+
+.chatroom__title {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--texto-principal, #2d2d2d);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatroom__header-spacer {
+  width: 88px;
+  flex-shrink: 0;
 }
 
 .chatroom__container {
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   width: 100%;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: var(--fondo-tarjeta, white);
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
 }
 
@@ -32,7 +83,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background: #f8f9fa;
+  background: var(--fondo-pagina, #f8f9fa);
 }
 
 /* Mensaje individual */
@@ -75,14 +126,14 @@
 }
 
 .chatroom__message--propio .chatroom__bubble {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #d61d5b 0%, #8b1c31 100%);
   color: white;
   border-bottom-right-radius: 4px;
 }
 
 .chatroom__message--otro .chatroom__bubble {
-  background: #e9ecef;
-  color: #212529;
+  background: var(--fondo-opcion-hover, #e9ecef);
+  color: var(--texto-principal, #212529);
   border-bottom-left-radius: 4px;
 }
 
@@ -94,7 +145,7 @@
 }
 
 .chatroom__message--otro .chatroom__username {
-  color: #495057;
+  color: var(--texto-secundario, #495057);
 }
 
 .chatroom__message--propio .chatroom__username {
@@ -127,7 +178,7 @@
   justify-content: center;
   flex: 1;
   text-align: center;
-  color: #6c757d;
+  color: var(--texto-secundario, #6c757d);
   font-size: 1.1rem;
 }
 
@@ -141,7 +192,7 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  color: #495057;
+  color: var(--texto-secundario, #495057);
   font-size: 1.1rem;
 }
 
@@ -167,11 +218,16 @@
 
 /* Indicador de "escribiendo..." */
 .chatroom__typing-indicator {
-  padding: 12px 0;
-  color: #6c757d;
+  position: sticky;
+  bottom: 0;
+  padding: 12px 0 4px;
+  margin-top: auto;
+  background: linear-gradient(to top, var(--fondo-pagina, #f8f9fa) 70%, rgba(248, 249, 250, 0));
+  color: var(--texto-secundario, #6c757d);
   font-size: 0.9rem;
   font-style: italic;
   animation: pulse 1.5s ease-in-out infinite;
+  z-index: 1;
 }
 
 @keyframes pulse {
@@ -190,7 +246,7 @@
 /* Formulario de envío */
 .chatroom__form {
   padding: 16px 20px;
-  background: white;
+  background: var(--fondo-tarjeta, white);
   border-top: 1px solid #e9ecef;
   display: flex;
   gap: 12px;
@@ -207,31 +263,32 @@
 .chatroom__input {
   flex: 1;
   padding: 12px 16px;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--borde-suave, #e9ecef);
   border-radius: 24px;
   font-size: 0.95rem;
   font-family: inherit;
   outline: none;
   transition: all 0.3s ease;
-  background: #f8f9fa;
+  background: var(--fondo-pagina, #f8f9fa);
+  color: var(--texto-principal, #1f2937);
 }
 
 .chatroom__input:focus {
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #8b1c31;
+  background: var(--fondo-tarjeta, white);
+  box-shadow: 0 0 0 3px rgba(139, 28, 49, 0.1);
 }
 
 .chatroom__input:disabled {
-  background: #e9ecef;
-  color: #6c757d;
+  background: var(--fondo-opcion-hover, #e9ecef);
+  color: var(--texto-secundario, #6c757d);
   cursor: not-allowed;
 }
 
 /* Botón de envío */
 .chatroom__button {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #d61d5b 0%, #8b1c31 100%);
   color: white;
   border: none;
   border-radius: 24px;
@@ -239,12 +296,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(214, 29, 91, 0.4);
 }
 
 .chatroom__button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+  box-shadow: 0 6px 16px rgba(214, 29, 91, 0.6);
 }
 
 .chatroom__button:active:not(:disabled) {
