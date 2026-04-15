@@ -54,54 +54,50 @@ export default function Sidebar() {
 
       <hr className="separador" />
 
-      <nav className="menu-nav">
-        {menuOpciones.map((opcion) => (
-          <NavLink
-            key={opcion.id}
-            to={opcion.ruta}
-            className={({ isActive }) =>
-              `boton-opcion ${isActive ? 'activa' : ''}`
-            }
-          >
-            <div className="icono-caja">
-              <img
-                src={opcion.icono}
-                alt={opcion.nombre}
-                className="icono-img"
-              />
-            </div>
-            <span className="texto-opcion">{opcion.nombre}</span>
-          </NavLink>
-        ))}
-      </nav>
+      {menuOpciones.map((opcion) => (
+        <NavLink
+          key={opcion.id}
+          to={opcion.ruta}
+          className={({ isActive }) =>
+            `boton-opcion ${isActive ? 'activa' : ''}`
+          }
+        >
+          <div className="icono-caja">
+            <img
+              src={opcion.icono}
+              alt={opcion.nombre}
+              className="icono-img"
+            />
+          </div>
+          <span className="texto-opcion">{opcion.nombre}</span>
+        </NavLink>
+      ))}
 
       <hr className="separador" />
 
-      <div className="menu-abajo">
-        <NavLink
-          to="/informacion"
-          className={({ isActive }) =>
-            `boton-opcion ${isActive ? 'activa' : ''}`
-          }
-        >
-          <div className="icono-caja">
-            <img src={modoOscuro ? iconInfoGris : iconInfo} alt="Información" className="icono-img" />
-          </div>
-          <span className="texto-opcion">Información</span>
-        </NavLink>
+      <NavLink
+        to="/informacion"
+        className={({ isActive }) =>
+          `boton-opcion ${isActive ? 'activa' : ''}`
+        }
+      >
+        <div className="icono-caja">
+          <img src={modoOscuro ? iconInfoGris : iconInfo} alt="Información" className="icono-img" />
+        </div>
+        <span className="texto-opcion">Información</span>
+      </NavLink>
 
-        <NavLink
-          to="/perfil"
-          className={({ isActive }) =>
-            `boton-opcion ${isActive ? 'activa' : ''}`
-          }
-        >
-          <div className="icono-caja">
-            <img src={modoOscuro ? iconUsuarioGris : iconUsuario} alt="Usuario" className="icono-img" />
-          </div>
-          <span className="texto-opcion">{nombreUsuario}</span>
-        </NavLink>
-      </div>
+      <NavLink
+        to="/perfil"
+        className={({ isActive }) =>
+          `boton-opcion ${isActive ? 'activa' : ''}`
+        }
+      >
+        <div className="icono-caja">
+          <img src={modoOscuro ? iconUsuarioGris : iconUsuario} alt="Usuario" className="icono-img" />
+        </div>
+        <span className="texto-opcion">{nombreUsuario}</span>
+      </NavLink>
     </aside>
   );
 }
