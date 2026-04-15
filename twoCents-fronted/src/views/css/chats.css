@@ -285,3 +285,48 @@ body.modo-oscuro {
   background-color: #a31f3e;
   box-shadow: 0 6px 12px rgba(196, 39, 76, 0.4);
 }
+
+/* =========================================
+   RESPONSIVE - PANTALLAS PEQUEÑAS
+   ========================================= */
+@media (max-width: 800px) {
+  .chat-container {
+    margin-left: 0;
+    margin-top: 70px;
+    padding: 20px;
+  }
+
+  .chat-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .chat-card {
+    padding: 10px 15px;
+    gap: 12px;
+  }
+
+  .btn-add-chat {
+    bottom: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    font-size: 2rem;
+  }
+
+  .modal-contenido {
+    width: 95%;
+    max-width: 350px;
+    padding: 20px;
+  }
+
+  .modal-contenido h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .btn-add-chat {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+  }
+}
