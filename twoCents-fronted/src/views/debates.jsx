@@ -6,12 +6,28 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de debates correcta
 import iconoDebates from '../recursos/imagenes/Debate.png';
 import iconoDebatesGris from '../recursos/imagenes/Debate_Gris.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/debates_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/debates_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/debates_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/debates_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Debates = () => {
   const navigate = useNavigate();
   const modoOscuro = useTemaOscuro();
+  const [esMovil, setEsMovil] = useState(() => window.matchMedia('(max-width: 800px)').matches);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 800px)');
+    const handler = (e) => setEsMovil(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const fondoActual = esMovil
+    ? (modoOscuro ? fondoMovilOscuro : fondoMovilClaro)
+    : (modoOscuro ? fondoDesktopOscuro : fondoDesktopClaro);
   // Lista de chats de ejemplo con temática de debates
   const [chatsDebates, setChatsDebates] = useState([]);
 
@@ -127,8 +143,14 @@ const Debates = () => {
     <div className="page-layout">
       <Sidebar />
 
-      <main className="chat-container">
-        <header className="chat-header">
+      <main className="chat-container" style={{
+        backgroundImage: `url(${fondoActual})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: esMovil ? 'scroll' : 'fixed',
+      }}>
+        <header className="chat-header chat-header--debates">
           <h1>Mis Chats de Debates</h1>
         </header>
 
@@ -136,7 +158,7 @@ const Debates = () => {
           {chatsDebates.map((chat) => (
             <div 
               key={chat.id} 
-              className="chat-card"
+              className="chat-card chat-card--debates"
               onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >

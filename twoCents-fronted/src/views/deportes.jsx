@@ -6,12 +6,28 @@ import './css/chats.css';
 // IMPORTANTE: Ajusta la ruta de la imagen si tu carpeta se llama distinto
 import iconoDeportes from '../recursos/imagenes/deportes.png';
 import iconoDeportesGris from '../recursos/imagenes/deportes_Gris.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/deportes_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/deportes_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/deportes_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/deportes_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Deportes = () => {
   const navigate = useNavigate();
   const modoOscuro = useTemaOscuro();
+  const [esMovil, setEsMovil] = useState(() => window.matchMedia('(max-width: 800px)').matches);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 800px)');
+    const handler = (e) => setEsMovil(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const fondoActual = esMovil
+    ? (modoOscuro ? fondoMovilOscuro : fondoMovilClaro)
+    : (modoOscuro ? fondoDesktopOscuro : fondoDesktopClaro);
   // 1. ESTADO DE LOS CHATS (Iniciamos con algunos de prueba para que no se vea vacío)
   const [chatsDeportes, setChatsDeportes] = useState([]);
 
@@ -131,8 +147,14 @@ const Deportes = () => {
     <div className="page-layout">
       <Sidebar />
 
-      <main className="chat-container">
-        <header className="chat-header">
+      <main className="chat-container" style={{
+        backgroundImage: `url(${fondoActual})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: esMovil ? 'scroll' : 'fixed',
+      }}>
+        <header className="chat-header chat-header--deportes">
           <h1>Mis Chats de Deportes</h1>
         </header>
 
@@ -141,7 +163,7 @@ const Deportes = () => {
           {chatsDeportes.map((chat) => (
             <div 
               key={chat.id} 
-              className="chat-card" 
+              className="chat-card chat-card--deportes" 
               onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >

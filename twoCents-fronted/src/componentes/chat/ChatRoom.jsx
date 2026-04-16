@@ -19,6 +19,8 @@ export default function ChatRoom() {
   const [usuariosEscribiendo, setUsuariosEscribiendo] = useState([]);
   const [estoyEscribiendo, setEstoyEscribiendo] = useState(false);
   const [nombreSala, setNombreSala] = useState(location.state?.nombreSala || 'Cargando sala...');
+  const [categoriaSala, setCategoriaSala] = useState('');
+  const [usuariosConectados, setUsuariosConectados] = useState(1);
   
   // Ref para auto-scroll al final de los mensajes
   const messagesEndRef = useRef(null);
@@ -55,6 +57,7 @@ export default function ChatRoom() {
           if (respuestaSala.ok) {
             const sala = await respuestaSala.json();
             setNombreSala(sala?.nombre || `Sala ${idSala}`);
+            setCategoriaSala(sala?.tipo || '');
           } else {
             setNombreSala(`Sala ${idSala}`);
           }
@@ -86,6 +89,17 @@ export default function ChatRoom() {
         localStorage.removeItem(CLAVE_SALA_ACTUAL);
       }
     };
+  }, [idSala]);
+
+  // Escuchar conteo de usuarios conectados
+  useEffect(() => {
+    const manejarUsuarios = ({ id_sala, total }) => {
+      if (Number(id_sala) === Number(idSala)) {
+        setUsuariosConectados(total);
+      }
+    };
+    socket.on('usuarios_sala', manejarUsuarios);
+    return () => socket.off('usuarios_sala', manejarUsuarios);
   }, [idSala]);
 
   // Escuchar evento de nuevo mensaje
@@ -272,8 +286,16 @@ export default function ChatRoom() {
         >
           ← ATRÁS
         </button>
-        <h2 className="chatroom__title">{nombreSala}</h2>
-        <div className="chatroom__header-spacer" aria-hidden="true"></div>
+        <div className="chatroom__title-group">
+          {categoriaSala && (
+            <span className="chatroom__categoria">{categoriaSala.charAt(0).toUpperCase() + categoriaSala.slice(1)}</span>
+          )}
+          <h2 className="chatroom__title">{nombreSala}</h2>
+        </div>
+        <div className="chatroom__usuarios-online">
+          <span className="chatroom__online-dot"></span>
+          <span className="chatroom__online-count">{usuariosConectados}</span>
+        </div>
       </div>
       <div className="chatroom__container">
         {/* Lista de mensajes */}

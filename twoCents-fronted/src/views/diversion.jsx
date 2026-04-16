@@ -6,12 +6,29 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen para que Vite sepa dónde está y la empaquete correctamente
 import iconoDiversion from '../recursos/imagenes/Diversion.png';
 import iconoDiversionGris from '../recursos/imagenes/Diversion_Gris.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/diversion_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/diversion_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/diversion_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/diversion_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Diversion = () => {
   const navigate = useNavigate();
   const modoOscuro = useTemaOscuro();
+  const [esMovil, setEsMovil] = useState(() => window.matchMedia('(max-width: 800px)').matches);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 800px)');
+    const handler = (e) => setEsMovil(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const fondoActual = esMovil
+    ? (modoOscuro ? fondoMovilOscuro : fondoMovilClaro)
+    : (modoOscuro ? fondoDesktopOscuro : fondoDesktopClaro);
+
   const [chatsDiversion, setChatsDiversion] = useState([]);
 
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -126,10 +143,16 @@ const Diversion = () => {
     <div className="page-layout">
       <Sidebar />
 
-      <main className="chat-container">
+      <main className="chat-container" style={{
+        backgroundImage: `url(${fondoActual})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: esMovil ? 'scroll' : 'fixed',
+      }}>
         {/* Veo en tu captura que tienes un fondo rojo en el header. 
             Si lo añadiste en un div externo, mantenlo. Yo te dejo la estructura base. */}
-        <header className="chat-header">
+        <header className="chat-header chat-header--diversion">
           <h1>Mis Chats de Diversión</h1>
         </header>
 
@@ -137,7 +160,7 @@ const Diversion = () => {
           {chatsDiversion.map((chat) => (
             <div 
               key={chat.id} 
-              className="chat-card" 
+              className="chat-card chat-card--diversion" 
               onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >

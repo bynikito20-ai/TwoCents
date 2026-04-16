@@ -12,14 +12,14 @@
 
 /* Variables globales del tema oscuro */
 body.modo-oscuro {
-	--fondo-pagina: #10141d;
-	--fondo-tarjeta: #171f2e;
-	--texto-principal: #f3f4f6;
-	--texto-secundario: #cbd5e1;
-	--borde-suave: #334155;
-	--fondo-sidebar: #0f172a;
-	--fondo-opcion-hover: #1f2937;
-	--fondo-opcion-activa: #3d1f2b;
+	--fondo-pagina: #2b2824;
+	--fondo-tarjeta: #36312c;
+	--texto-principal: #f2efea;
+	--texto-secundario: #c9bfb6;
+	--borde-suave: #534a42;
+	--fondo-sidebar: #24211d;
+	--fondo-opcion-hover: #403933;
+	--fondo-opcion-activa: #8a4b53;
 }
 
 * {

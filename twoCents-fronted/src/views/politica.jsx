@@ -6,12 +6,28 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de política correcta
 import iconoPolitica from '../recursos/imagenes/Politica.png';
 import iconoPoliticaGris from '../recursos/imagenes/Politica_Gris.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/politica_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/politica_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/politica_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/politica_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Politica = () => {
   const navigate = useNavigate();
   const modoOscuro = useTemaOscuro();
+  const [esMovil, setEsMovil] = useState(() => window.matchMedia('(max-width: 800px)').matches);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 800px)');
+    const handler = (e) => setEsMovil(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const fondoActual = esMovil
+    ? (modoOscuro ? fondoMovilOscuro : fondoMovilClaro)
+    : (modoOscuro ? fondoDesktopOscuro : fondoDesktopClaro);
   // Lista de chats de ejemplo con temática de política sin notificaciones
   const [chatsPolitica, setChatsPolitica] = useState([]);
 
@@ -127,8 +143,14 @@ const Politica = () => {
     <div className="page-layout">
       <Sidebar />
 
-      <main className="chat-container">
-        <header className="chat-header">
+      <main className="chat-container" style={{
+        backgroundImage: `url(${fondoActual})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: esMovil ? 'scroll' : 'fixed',
+      }}>
+        <header className="chat-header chat-header--politica">
           <h1>Mis Chats de Política</h1>
         </header>
 
@@ -136,7 +158,7 @@ const Politica = () => {
           {chatsPolitica.map((chat) => (
             <div 
               key={chat.id} 
-              className="chat-card" 
+              className="chat-card chat-card--politica" 
               onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >

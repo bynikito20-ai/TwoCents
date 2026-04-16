@@ -105,41 +105,5 @@
     height: 220px; /* Ajustamos un poco la foto para móvil */
   }
 
-  /* --- 2. LA SIDEBAR (AHORA ES NAVBAR ARRIBA) --- */
-  .sidebar {
-    width: 100% !important;
-    height: 65px !important;
-    flex-direction: row !important; /* Iconos en fila */
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    border-right: none;
-    border-bottom: 1px solid #d1d5db;
-  }
-
-  /* Ocultamos lo que no cabe en el móvil */
-  .sidebar-logo-caja,
-  .separador,
-  .texto-opcion,
-  .menu-abajo {
-    display: none !important;
-  }
-
-  /* Repartimos los iconos por la barra superior */
-  .menu-nav {
-    flex-direction: row !important;
-    width: 100%;
-    justify-content: space-around;
-    margin: 0;
-    padding: 0;
-  }
-
-  .boton-opcion {
-    min-width: auto !important;
-    flex: 1;
-    justify-content: center;
-    height: 65px;
-    border-radius: 0;
-  }
+  /* La sidebar responsive se controla desde src/componentes/Sidebar.css */
 }

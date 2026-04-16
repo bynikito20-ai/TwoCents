@@ -253,23 +253,33 @@ io.on('connection', (socket) => {
     // ------------------------------------------
     socket.on('unirse_chat', (data) => {
         // data contiene { id_sala, id_usuario, nombre_usuario }
-        const idSala = data.id_sala || data; // Por si enviamos solo el idSala
+        const idSala = String(data.id_sala || data); // Siempre string para consistencia
 
         if (socket.data?.salaActual && socket.data.salaActual !== idSala) {
-            socket.leave(socket.data.salaActual);
+            const salaAnterior = socket.data.salaActual;
+            socket.leave(salaAnterior);
+            // Emitir tras el leave (el socket ya salió)
+            setImmediate(() => {
+                const countAnterior = io.sockets.adapter.rooms.get(salaAnterior)?.size || 0;
+                io.to(salaAnterior).emit('usuarios_sala', { id_sala: salaAnterior, total: countAnterior });
+            });
         }
         socket.data = socket.data || {};
         socket.data.salaActual = idSala;
         
-        // socket.join() agrupa a los usuarios en una "habitación" específica
-        // para que los mensajes no se mezclen con otras salas.
         socket.join(idSala);
         console.log(`💬 ${data.nombre_usuario || 'Usuario'} se unió a la sala: ${idSala}`);
+
+        // Emitir conteo actualizado a todos en la sala
+        setImmediate(() => {
+            const count = io.sockets.adapter.rooms.get(idSala)?.size || 1;
+            io.to(idSala).emit('usuarios_sala', { id_sala: idSala, total: count });
+        });
     });
 
     socket.on('salir_chat', (data) => {
-        const idSala = data?.id_sala;
-        if (!idSala) {
+        const idSala = String(data?.id_sala);
+        if (!idSala || idSala === 'undefined') {
             return;
         }
 
@@ -277,6 +287,12 @@ io.on('connection', (socket) => {
         if (socket.data?.salaActual === idSala) {
             socket.data.salaActual = null;
         }
+
+        // Emitir conteo actualizado tras salir
+        setImmediate(() => {
+            const count = io.sockets.adapter.rooms.get(idSala)?.size || 0;
+            io.to(idSala).emit('usuarios_sala', { id_sala: idSala, total: count });
+        });
     });
 
     // ------------------------------------------
@@ -403,6 +419,14 @@ io.on('connection', (socket) => {
     // 3. DESCONEXIÓN
     // ------------------------------------------
     socket.on('disconnect', () => {
+        const salaActual = socket.data?.salaActual;
+        if (salaActual) {
+            // Emitir conteo actualizado a los que quedan en la sala
+            setImmediate(() => {
+                const count = io.sockets.adapter.rooms.get(String(salaActual))?.size || 0;
+                io.to(String(salaActual)).emit('usuarios_sala', { id_sala: salaActual, total: count });
+            });
+        }
         console.log('🔌 Cliente desconectado');
     });
 });

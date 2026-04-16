@@ -6,12 +6,29 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de recuerdos correcta
 import iconoRecuerdos from '../recursos/imagenes/Recuerdos.png';
 import iconoRecuerdosGris from '../recursos/imagenes/Recuerdos_Gris.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/recuerdos_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/recuerdos_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/recuerdos_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/recuerdos_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Recuerdos = () => {
   const navigate = useNavigate();
   const modoOscuro = useTemaOscuro();
+  const [esMovil, setEsMovil] = useState(() => window.matchMedia('(max-width: 800px)').matches);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 800px)');
+    const handler = (e) => setEsMovil(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const fondoActual = esMovil
+    ? (modoOscuro ? fondoMovilOscuro : fondoMovilClaro)
+    : (modoOscuro ? fondoDesktopOscuro : fondoDesktopClaro);
+
   // Lista de chats de ejemplo con temática de nostalgia y recuerdos
   const [chatsRecuerdos, setChatsRecuerdos] = useState([]);
 
@@ -127,8 +144,8 @@ const Recuerdos = () => {
     <div className="page-layout">
       <Sidebar />
 
-      <main className="chat-container">
-        <header className="chat-header">
+      <main className="chat-container" style={{ backgroundImage: `url(${fondoActual})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'local' }}>
+        <header className="chat-header chat-header--recuerdos">
           <h1>Mis Chats de Recuerdos</h1>
         </header>
 
@@ -136,7 +153,7 @@ const Recuerdos = () => {
           {chatsRecuerdos.map((chat) => (
             <div 
               key={chat.id} 
-              className="chat-card" 
+              className="chat-card chat-card--recuerdos" 
               onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >

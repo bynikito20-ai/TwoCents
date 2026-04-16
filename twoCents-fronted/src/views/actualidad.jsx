@@ -6,12 +6,29 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de actualidad correcta
 import iconoActualidad from '../recursos/imagenes/Actualidad.png';
 import iconoActualidadGris from '../recursos/imagenes/Actualidad_Gris.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/actualidad_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/actualidad_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/actualidad_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/actualidad_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
 const Actualidad = () => {
   const navigate = useNavigate();
   const modoOscuro = useTemaOscuro();
+  const [esMovil, setEsMovil] = useState(() => window.matchMedia('(max-width: 800px)').matches);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 800px)');
+    const handler = (e) => setEsMovil(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const fondoActual = esMovil
+    ? (modoOscuro ? fondoMovilOscuro : fondoMovilClaro)
+    : (modoOscuro ? fondoDesktopOscuro : fondoDesktopClaro);
+
   // Lista de chats de ejemplo con temática de actualidad y noticias
   const [chatsActualidad, setChatsActualidad] = useState([]);
   
@@ -128,15 +145,21 @@ const Actualidad = () => {
     <div className="page-layout">
       <Sidebar />
 
-      <main className="chat-container">
-        <header className="chat-header">
+      <main className="chat-container" style={{
+        backgroundImage: `url(${fondoActual})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: esMovil ? 'scroll' : 'fixed',
+      }}>
+        <header className="chat-header chat-header--actualidad">
           <h1>Mis Chats de Actualidad</h1>
         </header>
 
         <section className="chat-list">
           {chatsActualidad.map((chat) => (
             <div key={chat.id} 
-              className="chat-card"
+              className="chat-card chat-card--actualidad"
               onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >
