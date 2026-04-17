@@ -2,10 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../componentes/sidebar.jsx';
 import { ThemeToggle } from '../componentes/aspecto/ThemeToggle.jsx';
+import { useFondoBody } from '../contexto/useFondoResponsive';
 import './css/Perfil.css';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/usuario_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/usuario_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/usuario_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/usuario_movil_oscuro.png';
 
 export default function Perfil() {
   const navigate = useNavigate();
+  useFondoBody({
+    desktopClaro: fondoDesktopClaro,
+    desktopOscuro: fondoDesktopOscuro,
+    movilClaro: fondoMovilClaro,
+    movilOscuro: fondoMovilOscuro,
+  });
   
   // Recuperamos el usuario del localStorage (ahora es JSON)
   const usuarioJSON = localStorage.getItem('usuarioLogeado');
@@ -54,50 +65,34 @@ export default function Perfil() {
   };
 
   return (
-    <div className="pagina-inicio">
-      {' '}
-      {/* Usamos tu misma clase para mantener el estilo base */}
+    <div className="perfil-layout">
       <Sidebar />
-      <h1 className="titulo-principal">MI PERFIL</h1>
-      <div
-        style={{
-          padding: '20px',
-          maxWidth: '600px',
-          margin: '0 auto',
-          backgroundColor: 'var(--fondo-tarjeta, #fff)',
-          borderRadius: '10px',
-        }}
-      >
-        {/* SECCIÓN: INFORMACIÓN DE LA CUENTA */}
-        <h2> Información de la cuenta</h2>
-        <p style={{ fontSize: '18px' }}>
+      <main className="pagina-perfil">
+        <header className="vista-header vista-header--perfil">
+          <h1 className="vista-header__title">MI PERFIL</h1>
+        </header>
+        <div className="tarjeta-perfil">
+          <h2>Información de la cuenta</h2>
+          <p className="info-texto">
           <strong>Usuario:</strong> {nombreUsuario}
-        </p>
-        <p style={{ fontSize: '18px' }}>
+          </p>
+          <p className="info-texto">
           <strong>Correo:</strong> {correoUsuario}
-        </p>
+          </p>
 
-        {/* SECCIÓN: APARIENCIA */}
-        <h2>Apariencia</h2>
-        <ThemeToggle modoOscuro={modoOscuro} cambiarTema={cambiarTema} />
+          <hr className="separador-perfil" />
 
-        {/* SECCIÓN: CERRAR SESIÓN */}
-        <h2>Sesión</h2>
-        <button
-          onClick={cerrarSesion}
-          style={{
-            padding: '10px 20px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            backgroundColor: '#C53A55',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-          }}
-        >
-          Cerrar Sesión
-        </button>
-      </div>
+          <h2>Apariencia</h2>
+          <ThemeToggle modoOscuro={modoOscuro} cambiarTema={cambiarTema} />
+
+          <hr className="separador-perfil" />
+
+          <h2>Sesión</h2>
+          <button onClick={cerrarSesion} className="btn-accion btn-cerrar-sesion">
+            Cerrar Sesión
+          </button>
+        </div>
+      </main>
     </div>
   );
 }

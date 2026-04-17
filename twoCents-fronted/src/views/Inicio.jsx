@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './css/Inicio.css';
+import { useFondoBody } from '../contexto/useFondoResponsive';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/inicio_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/inicio_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/inicio_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/inicio_movil_oscuro.png';
 
 // 1. IMPORTAMOS LA FUNCIÓN DESDE TU NUEVA CARPETA DE SERVICIOS
 // (Ojo: Asegúrate de que la ruta '../servicios/peticionesApi' cuadra con tus carpetas. 
@@ -7,6 +12,14 @@ import './css/Inicio.css';
 import { obtenerNoticias } from '../servicios/peticionesApi';
 
 export default function Inicio() {
+  useFondoBody({
+    desktopClaro: fondoDesktopClaro,
+    desktopOscuro: fondoDesktopOscuro,
+    movilClaro: fondoMovilClaro,
+    movilOscuro: fondoMovilOscuro,
+    attachment: 'fixed',
+  });
+
   const [noticias, setNoticias] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -35,7 +48,9 @@ export default function Inicio() {
 
   return (
     <div className="pagina-inicio">
-      <h1 className="titulo-principal">LAS NOTICIAS DE HOY</h1>
+      <header className="vista-header vista-header--inicio">
+        <h1 className="vista-header__title">LAS NOTICIAS DE HOY</h1>
+      </header>
 
       {cargando && <h3 style={{ textAlign: 'center' }}>Cargando las últimas noticias... ⏳</h3>}
       {error && <h3 style={{ color: 'red', textAlign: 'center' }}>Ups: {error}</h3>}

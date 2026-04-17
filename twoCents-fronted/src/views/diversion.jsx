@@ -6,10 +6,10 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen para que Vite sepa dónde está y la empaquete correctamente
 import iconoDiversion from '../recursos/imagenes/Diversion.png';
 import iconoDiversionGris from '../recursos/imagenes/Diversion_Gris.png';
-import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/diversion_desktop_claro.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/diversion_desktop_claro.png';
 import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/diversion_desktop_oscuro.png';
 import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/diversion_movil_claro.png';
-import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/diversion_movil_oscuro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/diversion_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 

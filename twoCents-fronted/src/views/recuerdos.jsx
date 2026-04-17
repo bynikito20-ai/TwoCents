@@ -6,10 +6,10 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de recuerdos correcta
 import iconoRecuerdos from '../recursos/imagenes/Recuerdos.png';
 import iconoRecuerdosGris from '../recursos/imagenes/Recuerdos_Gris.png';
-import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/recuerdos_desktop_claro.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/recuerdos_desktop_claro.png';
 import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/recuerdos_desktop_oscuro.png';
 import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/recuerdos_movil_claro.png';
-import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/recuerdos_movil_oscuro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/recuerdos_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 

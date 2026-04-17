@@ -5,11 +5,11 @@
             --bg: var(--fondo-pagina, #f4f7f6);
         }
 
-        .page-layout {
+        .info-layout {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text);
-            background-color: var(--bg);
+            background-color: transparent;
             min-height: 100vh;
         }
 
@@ -21,13 +21,40 @@
             overflow-y: auto;
             color: var(--texto-principal);
             box-sizing: border-box;
+            background-color: transparent;
         }
 
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 2rem 1rem;
+        .vista-header {
+            width: 100%;
+            margin: 0 0 30px;
+            background-color: rgba(139, 28, 49, 0.9);
+            backdrop-filter: blur(4px);
+            border-radius: 10px;
+            padding: 1.5rem 2rem;
             text-align: center;
+            color: #ffffff;
+        }
+
+        .vista-header--informacion {
+            width: 100%;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1.15rem 2.1rem 1.05rem;
+        }
+
+        .vista-header__title {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .vista-header p {
+            margin: 0.4rem 0 0;
+            color: rgba(255, 255, 255, 0.92);
         }
 
         nav {
@@ -51,10 +78,15 @@
             max-width: none;
             margin: 2rem 0;
             padding: 0 1rem;
-            background: var(--fondo-tarjeta, white);
+            background: rgba(255, 255, 255, 0.82);
             padding: 2rem;
             border-radius: 8px;
             box-sizing: border-box;
+            backdrop-filter: blur(4px);
+        }
+
+        body.modo-oscuro .container {
+            background: rgba(36, 33, 29, 0.82);
         }
 
         h2 {
@@ -97,5 +129,18 @@
                 margin-top: 70px;
                 padding: 1.25rem;
                 box-sizing: border-box;
+            }
+
+            .vista-header {
+                padding: 1rem 1.25rem;
+            }
+
+            .vista-header--informacion {
+                width: 100%;
+                padding: 0.95rem 1.1rem;
+            }
+
+            .vista-header__title {
+                font-size: 1.6rem;
             }
         }

@@ -6,10 +6,10 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de reflexivas correcta
 import iconoReflexivas from '../recursos/imagenes/Reflexivas.png';
 import iconoReflexivasGris from '../recursos/imagenes/Reflexivas_Gris.png';
-import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/reflexion_desktop_claro.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/reflexion_desktop_claro.png';
 import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/reflexion_desktop_oscuro.png';
 import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/reflexion_movil_claro.png';
-import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/reflexion_movil_oscuro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/reflexion_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 

@@ -1,16 +1,28 @@
 import React from 'react';
 import Sidebar from '../componentes/sidebar.jsx';
 import './css/Informacion.css';
+import { useFondoBody } from '../contexto/useFondoResponsive';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/informacion_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/informacion_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/informacion_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/informacion_movil_oscuro.png';
 
 const Informacion = () => {
+  useFondoBody({
+    desktopClaro: fondoDesktopClaro,
+    desktopOscuro: fondoDesktopOscuro,
+    movilClaro: fondoMovilClaro,
+    movilOscuro: fondoMovilOscuro,
+  });
+
   return (
-    <div className="page-layout">
+    <div className="info-layout">
       <Sidebar />
 
       {/* Usamos una etiqueta <main> para el contenido y que pueda hacer scroll si es muy largo */}
       <main className="informacion-main">
-        <header>
-          <h1>TwoCents</h1>
+        <header className="vista-header vista-header--informacion">
+          <h1 className="vista-header__title">TwoCents</h1>
           <p>Autores: Nicolas Cirstea y Héctor Carbajo</p>
           <p>Desarrollo de Aplicaciones Web</p>
         </header>

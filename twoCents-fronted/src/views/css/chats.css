@@ -25,7 +25,9 @@ body.modo-oscuro {
 
 /* Busca esta parte en tu chats.css y ajusta el margin-bottom */
 .chat-header {
-  margin-bottom: 30px; /* Antes no tenía o era más pequeño. Esto separará el bloque rojo de las tarjetas */
+  width: 100%;
+  margin: 0 auto 30px;
+  text-align: center;
 }
 
 /* Si el margen se lo dabas al h1, pónselo al header directamente o aumenta el del h1 */
@@ -34,6 +36,9 @@ body.modo-oscuro {
   font-size: 2.2rem;
   letter-spacing: 1px;
   text-transform: uppercase;
+  margin: 0;
+  text-align: center;
+  color: #ffffff;
   /* margin-bottom: 30px; <-- Puedes quitar este si se lo pones al contenedor padre (.chat-header) */
 }
 
@@ -203,6 +208,10 @@ body.modo-oscuro .chat-header--reflexion {
   top: -2px;
   right: -2px;
   border: 2px solid var(--fondo-tarjeta, white);
+}
+
+body.modo-oscuro .status-dot {
+  background-color: #ffffff;
 }
 
 .chat-info {

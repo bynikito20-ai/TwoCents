@@ -4,7 +4,7 @@ import socket from '../servicios/useSocket'; // importacion del archivo de la co
 import { useTemaOscuro } from '../contexto/useTemaOscuro';
 // Ajusta esta ruta si tu carpeta de imágenes está en otro sitio
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
-import logoTwoCentsGris from '../recursos/imagenes/LogoTwoCents_ConLetras.png';
+import logoTwoCentsGris from '../recursos/imagenes/LogoTwoCents.png';
 import './css/IniciarSesion.css';
 
 

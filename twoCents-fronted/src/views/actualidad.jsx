@@ -6,10 +6,10 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de actualidad correcta
 import iconoActualidad from '../recursos/imagenes/Actualidad.png';
 import iconoActualidadGris from '../recursos/imagenes/Actualidad_Gris.png';
-import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/actualidad_desktop_claro.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/actualidad_desktop_claro.png';
 import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/actualidad_desktop_oscuro.png';
 import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/actualidad_movil_claro.png';
-import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/actualidad_movil_oscuro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/actualidad_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 

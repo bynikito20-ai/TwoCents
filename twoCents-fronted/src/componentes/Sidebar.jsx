@@ -5,7 +5,7 @@ import { useTemaOscuro } from '../contexto/useTemaOscuro';
 
 // IMPORTACIONES DE LOS LOGOS (Asegúrate de que coinciden con los nombres reales en tu carpeta)
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
-import logoTwoCentsGris from '../recursos/imagenes/LogoTwoCents_ConLetras.png';
+import logoTwoCentsGris from '../recursos/imagenes/LogoTwoCents.png';
 import iconDeportes from '../recursos/imagenes/deportes.png';
 import iconDeportesGris from '../recursos/imagenes/deportes_Gris.png';
 import iconDebates from '../recursos/imagenes/Debate.png';

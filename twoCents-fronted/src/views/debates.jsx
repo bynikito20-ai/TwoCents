@@ -6,10 +6,10 @@ import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de debates correcta
 import iconoDebates from '../recursos/imagenes/Debate.png';
 import iconoDebatesGris from '../recursos/imagenes/Debate_Gris.png';
-import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_movil/debates_desktop_claro.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/debates_desktop_claro.png';
 import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/debates_desktop_oscuro.png';
 import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/debates_movil_claro.png';
-import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_desktop/debates_movil_oscuro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/debates_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 

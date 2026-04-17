@@ -5,7 +5,7 @@ import { useTemaOscuro } from '../contexto/useTemaOscuro';
 
 // Asegúrate de que la ruta a tu logo y tu CSS son correctas
 import logoTwoCents from '../recursos/imagenes/LogoTwoCents.png';
-import logoTwoCentsGris from '../recursos/imagenes/LogoTwoCents_ConLetras.png';
+import logoTwoCentsGris from '../recursos/imagenes/LogoTwoCents.png';
 import './css/IniciarSesion.css'; // Usamos el mismo CSS para que la tarjeta se vea igual
 
 export default function Registro() {

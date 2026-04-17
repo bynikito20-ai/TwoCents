@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: linear-gradient(135deg, var(--fondo-pagina, #f5f7fa) 0%, #c3cfe2 100%);
+  background: var(--fondo-pagina, #f5f7fa);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -106,10 +106,14 @@
   max-width: none;
   margin: 0;
   width: 100%;
-  background: var(--fondo-tarjeta, white);
+  background: rgba(255, 255, 255, 0.22);
   border-radius: 0;
   box-shadow: none;
   overflow: hidden;
+}
+
+body.modo-oscuro .chatroom__container {
+  background: rgba(36, 33, 29, 0.24);
 }
 
 /* Sección de mensajes */
@@ -120,7 +124,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background: var(--fondo-pagina, #f8f9fa);
+  background-color: transparent;
 }
 
 /* Mensaje individual */
@@ -259,12 +263,16 @@
   bottom: 0;
   padding: 12px 0 4px;
   margin-top: auto;
-  background: linear-gradient(to top, var(--fondo-pagina, #f8f9fa) 70%, rgba(248, 249, 250, 0));
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.82) 70%, rgba(255, 255, 255, 0));
   color: var(--texto-secundario, #6c757d);
   font-size: 0.9rem;
   font-style: italic;
   animation: pulse 1.5s ease-in-out infinite;
   z-index: 1;
+}
+
+body.modo-oscuro .chatroom__typing-indicator {
+  background: linear-gradient(to top, rgba(36, 33, 29, 0.82) 70%, rgba(36, 33, 29, 0));
 }
 
 @keyframes pulse {

@@ -1,32 +1,63 @@
 /* Perfil.css */
 
+.perfil-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: transparent;
+}
+
 /* 1. EL CONTENEDOR PRINCIPAL */
 /* flex: 1 es vital para que ocupe el espacio sobrante a la derecha del Sidebar */
 .pagina-perfil {
   flex: 1; 
   padding: 40px;
-  background-color: var(--fondo-pantalla, #f8f9fa);
-  height: 100vh;
+  background-color: transparent;
+  min-height: 100vh;
   overflow-y: auto;
   color: var(--texto-principal, #333);
   transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.titulo-perfil {
+.vista-header {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 30px;
+  background-color: rgba(139, 28, 49, 0.9);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.vista-header__title {
+  margin: 0;
+  font-family: 'Georgia', serif;
   font-size: 2.2rem;
-  font-weight: bold;
-  margin-bottom: 30px;
-  color: var(--texto-titulo, #1a1a1a);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
 /* 2. LA TARJETA DEL PERFIL */
 .tarjeta-perfil {
-  background-color: var(--fondo-tarjeta, #ffffff);
+  background-color: rgba(255, 255, 255, 0.82);
   border-radius: 12px;
   padding: 30px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  width: 100%;
   max-width: 600px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(4px);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+body.modo-oscuro .tarjeta-perfil {
+  background-color: rgba(36, 33, 29, 0.82);
 }
 
 .tarjeta-perfil h2 {
@@ -126,6 +157,10 @@
 
 /* RESPONSIVE - PANTALLAS PEQUEÑAS */
 @media (max-width: 800px) {
+  .perfil-layout {
+    min-height: 100vh;
+  }
+
   .pagina-perfil {
     flex: 1;
     padding: 20px;
@@ -134,13 +169,17 @@
     height: auto;
   }
 
-  .titulo-perfil {
-    font-size: 1.6rem;
+  .vista-header {
+    width: 100%;
+    padding: 1rem 1.25rem;
     margin-bottom: 20px;
   }
 
+  .vista-header__title {
+    font-size: 1.6rem;
+  }
+
   .tarjeta-perfil {
-    max-width: 100%;
     padding: 20px;
   }
 }

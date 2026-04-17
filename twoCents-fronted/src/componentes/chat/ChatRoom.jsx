@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import socket from '../../servicios/useSocket';
+import { useFondoResponsive } from '../../contexto/useFondoResponsive';
 import './ChatRoom.css';
+import fondoDesktopClaro from '../../recursos/imagenes/fondos_chats_desktop/chat_desktop_claro.png';
+import fondoDesktopOscuro from '../../recursos/imagenes/fondos_chats_desktop/chat_desktop_oscuro.png';
+import fondoMovilClaro from '../../recursos/imagenes/fondos_chats_movil/chat_movil_claro.png';
+import fondoMovilOscuro from '../../recursos/imagenes/fondos_chats_movil/chat_movil_oscuro.png';
 
 const CLAVE_SALA_ACTUAL = 'salaChatActual';
 
@@ -21,6 +26,12 @@ export default function ChatRoom() {
   const [nombreSala, setNombreSala] = useState(location.state?.nombreSala || 'Cargando sala...');
   const [categoriaSala, setCategoriaSala] = useState('');
   const [usuariosConectados, setUsuariosConectados] = useState(1);
+  const fondoMensajes = useFondoResponsive({
+    desktopClaro: fondoDesktopClaro,
+    desktopOscuro: fondoDesktopOscuro,
+    movilClaro: fondoMovilClaro,
+    movilOscuro: fondoMovilOscuro,
+  });
   
   // Ref para auto-scroll al final de los mensajes
   const messagesEndRef = useRef(null);
@@ -299,7 +310,15 @@ export default function ChatRoom() {
       </div>
       <div className="chatroom__container">
         {/* Lista de mensajes */}
-        <div className="chatroom__messages">
+        <div
+          className="chatroom__messages"
+          style={{
+            backgroundImage: `url(${fondoMensajes})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
           {mensajes.length === 0 ? (
             <div className="chatroom__empty">
               <p>¡Sé el primero en iniciar la conversación!</p>

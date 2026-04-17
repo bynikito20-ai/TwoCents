@@ -5,16 +5,38 @@
   margin-left: 100px; /* Deja espacio para la Sidebar fija */
   padding: 3rem 4rem; /* Aire alrededor del contenido */
   min-height: 100vh; /* Que el fondo cubra toda la pantalla */
-  background-color: var(--fondo-pagina, #f3f4f6); /* Gris clarito de fondo */
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* 2. TÍTULO PRINCIPAL */
-.titulo-principal {
-  font-family: serif;
-  font-size: 2.5rem;
-  text-align: center; /* Centrado en su hueco */
-  color: var(--texto-principal, #141824);
-  margin-bottom: 3rem; /* Separación con las noticias */
+/* 2. CABECERA ESTILO SALAS */
+.pagina-inicio .vista-header {
+  width: min(100%, 1200px);
+  margin: 0 0 30px;
+  background-color: rgba(139, 28, 49, 0.9);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.pagina-inicio .vista-header--inicio {
+  width: min(100%, 1200px);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 2.4rem;
+}
+
+.pagina-inicio .vista-header__title {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
 /* 3. EL CONTENEDOR (La rejilla) */
@@ -24,8 +46,8 @@
   grid-template-columns: repeat(2, 1fr);
   /* gap: Primero define el espacio vertical y luego el horizontal */
   gap: 3rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto; /* Centra el bloque de noticias */
+  width: min(100%, 1200px);
+  margin: 0; /* El centrado lo hace el contenedor padre */
 }
 
 /* 4. LA TARJETA (Cada noticia individual) */
@@ -94,6 +116,19 @@
     margin-left: 0;
     margin-top: 70px;
     padding: 1.5rem;
+  }
+
+  .pagina-inicio .vista-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .pagina-inicio .vista-header--inicio {
+    width: 100%;
+    padding: 0.95rem 1.25rem;
+  }
+
+  .pagina-inicio .vista-header__title {
+    font-size: 1.6rem;
   }
 
   .contenedor-noticias {
