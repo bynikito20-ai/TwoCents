@@ -4,14 +4,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // 1. OJO AQUÍ: Si también pusiste sidebar.jsx en minúscula, déjalo así.
 // Si Sidebar.jsx sigue con mayúscula en tu carpeta 'componentes', cámbialo a './componentes/Sidebar'
-import Sidebar from './componentes/sidebar';
+import Sidebar from './componentes/Sidebar'
 
 // 2. AHORA SÍ: Todo en minúsculas coincidiendo con tus archivos
-import IniciarSesion from './views/iniciarSesion';
-import Registro from './views/registro';
-import Inicio from './views/inicio';
+import IniciarSesion from './views/IniciarSesion';
+import Registro from './views/Registro';
+import Inicio from './views/Inicio';
 import Perfil from './views/Perfil';
-import Informacion from './views/informacion';
+import Informacion from './views/Informacion';
 import Diversion from './views/diversion';
 import Deportes from './views/deportes';
 import Politica from './views/politica';
