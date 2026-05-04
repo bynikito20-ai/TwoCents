@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../componentes/sidebar.jsx';
+import Sidebar from '../componentes/Sidebar.jsx';
 import { ThemeToggle } from '../componentes/aspecto/ThemeToggle.jsx';
 import { useFondoBody } from '../contexto/useFondoResponsive';
 import './css/Perfil.css';

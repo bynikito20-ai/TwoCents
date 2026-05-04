@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from '../componentes/sidebar.jsx';
+import Sidebar from '../componentes/Sidebar.jsx';
 import './css/Informacion.css';
 import { useFondoBody } from '../contexto/useFondoResponsive';
 import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/informacion_desktop_claro.png';

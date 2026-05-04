@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../componentes/sidebar';
+import Sidebar from '../componentes/Sidebar';
 import { useTemaOscuro } from '../contexto/useTemaOscuro';
 import './css/chats.css';
 // IMPORTANTE: Importamos la imagen para que Vite sepa dónde está y la empaquete correctamente
