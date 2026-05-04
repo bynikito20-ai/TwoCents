@@ -7,7 +7,10 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    credentials: true
+}));
 app.use(express.json());
 
 // Evita procesar dos veces el mismo mensaje cuando hay doble emit casi simultaneo.
@@ -144,9 +147,12 @@ app.get('/api/mensajes/:idSala', (req, res) => {
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173", // La URL donde corre tu React
-        methods: ["GET", "POST"]
-    }
+        origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+    pingTimeout: 60000,   // ← evita desconexiones en Railway
+    pingInterval: 25000,
 });
 
 // ==========================================
@@ -155,7 +161,7 @@ const io = new Server(server, {
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
 });
 

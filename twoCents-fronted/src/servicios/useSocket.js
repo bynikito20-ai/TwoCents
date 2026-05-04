@@ -1,7 +1,6 @@
 import io from 'socket.io-client';
 
-// Creamos la conexión UNA SOLA VEZ
-const socket = io('http://localhost:3001');
+const socket = io(import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001');
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 const CLAVE_SALA_ACTUAL = 'salaChatActual';
