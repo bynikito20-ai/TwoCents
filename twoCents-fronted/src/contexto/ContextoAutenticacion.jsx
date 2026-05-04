@@ -1,0 +1,1 @@
+// # Para saber en todo momento si el usuario está logueado o no.
