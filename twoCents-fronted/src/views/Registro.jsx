@@ -62,7 +62,6 @@ export default function Registro() {
               <h2 style={{ color: alerta.tipo === 'exito' ? '#a83250' : '#a83250' }}>
                 {alerta.tipo === 'exito' ? '¡Genial!' : 'Ups...'}
               </h2>
-              <p className="linea-divisoria">________________________</p>
               <p className="alerta-mensaje">{alerta.mensaje}</p>
               
               {alerta.tipo === 'error' && (
