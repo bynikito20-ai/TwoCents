@@ -158,21 +158,25 @@ const io = new Server(server, {
 // ==========================================
 // CONFIGURACIÓN DE LA CONEXIÓN A MYSQL
 // ==========================================
-const db = mysql.createConnection({
+const db = mysql.createPool({
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-db.connect((err) => {
+db.getConnection((err, connection) => {
     if (err) {
         console.error('❌ Error conectando a la DB:', err);
         return;
     }
     console.log('✅ Conectado a MySQL: twocents_db');
+    connection.release();
 });
-
 // ==========================================
 // LÓGICA DE SOCKETS
 // ==========================================
