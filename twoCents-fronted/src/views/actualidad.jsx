@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../componentes/Sidebar';
+import { URL_BACKEND } from '../servicios/peticionesApi';
 import { useTemaOscuro } from '../contexto/useTemaOscuro';
 import './css/chats.css';
 // IMPORTANTE: Importamos la imagen de actualidad correcta
@@ -39,7 +40,7 @@ const Actualidad = () => {
   useEffect(() => {
       const cargarSalas = async () => {
         try {
-          const respuesta = await fetch('http://localhost:3001/api/salas/actualidad');
+          const respuesta = await fetch(`${URL_BACKEND}/api/salas/actualidad`);
           const salasBD = await respuesta.json();
           const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
   
@@ -85,7 +86,7 @@ const Actualidad = () => {
 
     try {
       // Hacemos la petición POST a tu backend
-      const respuesta = await fetch('http://localhost:3001/api/salas', {
+      const respuesta = await fetch(`${URL_BACKEND}/api/salas`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

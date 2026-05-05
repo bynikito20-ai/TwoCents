@@ -1,5 +1,5 @@
 // Guardamos la URL base para no repetirla
-const URL_BACKEND = 'http://localhost:3001';
+export const URL_BACKEND = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 // Creamos una función que solo se encarga de ir a buscar las noticias
 export const obtenerNoticias = async () => {

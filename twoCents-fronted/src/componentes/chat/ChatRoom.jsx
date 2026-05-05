@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import socket from '../../servicios/useSocket';
+import { URL_BACKEND } from '../../servicios/peticionesApi';
 import { useFondoResponsive } from '../../contexto/useFondoResponsive';
 import './ChatRoom.css';
 import fondoDesktopClaro from '../../recursos/imagenes/fondos_chats_desktop/chat_desktop_claro.png';
@@ -54,7 +55,7 @@ export default function ChatRoom() {
 
         // 2. Cargar historial de mensajes
         const respuesta = await fetch(
-          `http://localhost:3001/api/mensajes/${idSala}`
+          `${URL_BACKEND}/api/mensajes/${idSala}`
         );
         if (!respuesta.ok) {
           throw new Error('Error al cargar los mensajes');
@@ -64,7 +65,7 @@ export default function ChatRoom() {
 
         // 2.5 Cargar el nombre de la sala para el header
         try {
-          const respuestaSala = await fetch(`http://localhost:3001/api/sala/${idSala}`);
+          const respuestaSala = await fetch(`${URL_BACKEND}/api/sala/${idSala}`);
           if (respuestaSala.ok) {
             const sala = await respuestaSala.json();
             setNombreSala(sala?.nombre || `Sala ${idSala}`);
