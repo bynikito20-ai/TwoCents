@@ -94,15 +94,10 @@ app.get('/api/sala/:idSala', (req, res) => {
 // ==========================================
 app.get('/api/noticias', async (req, res) => {
     try {
-        // Cogemos la llave secreta del archivo .env
-        const API_KEY = process.env.NEWS_API_KEY; 
-        const url = `https://newsapi.org/v2/everything?q=actualidad OR españa&language=es&sortBy=publishedAt&apiKey=${API_KEY}`;
-        
-        // El backend hace la petición a NewsAPI
+        const API_KEY = process.env.NEWS_API_KEY;
+        const url = `https://gnews.io/api/v4/search?q=actualidad&lang=es&country=es&max=10&apikey=${API_KEY}`;
         const respuesta = await fetch(url);
         const datos = await respuesta.json();
-        
-        // Le enviamos los datos limpios al frontend
         res.json(datos);
     } catch (error) {
         console.error("❌ Error al pedir noticias:", error);

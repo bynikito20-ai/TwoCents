@@ -64,7 +64,7 @@ export default function Inicio() {
               <article key={index} className="tarjeta-noticia">
                 <h2 className="noticia-titulo">{noticia.title}</h2>
                 <img
-                  src={noticia.urlToImage || 'https://via.placeholder.com/400x225?text=Sin+Imagen'}
+                  src={noticia.image || 'https://via.placeholder.com/400x225?text=Sin+Imagen'}
                   alt="Imagen de la noticia"
                   className="noticia-imagen"
                 />
