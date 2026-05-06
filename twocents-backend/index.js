@@ -6,6 +6,11 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 require('dotenv').config();
 
+function formatearFechaMySQL(fecha) {
+    const d = fecha ? new Date(fecha) : new Date();
+    return d.toISOString().slice(0, 19).replace('T', ' ');
+}
+
 const app = express();
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
@@ -366,7 +371,7 @@ io.on('connection', (socket) => {
             // 1. Guardamos el mensaje en tu tabla 'mensaje' de MySQL
             const sql = "INSERT INTO MENSAJE (id_sala, id_usuario, contenido, hora_envio) VALUES (?, ?, ?, ?)";
 
-            db.query(sql, [id_sala, id_usuario, contenidoNormalizado, new Date()], (err, result) => {
+            db.query(sql, [id_sala, id_usuario, contenidoNormalizado, formatearFechaMySQL(hora_envio)], (err, result) => {
                 if (err) {
                     console.error("❌ Error al guardar mensaje:", err);
                     return;
