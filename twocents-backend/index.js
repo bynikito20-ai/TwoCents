@@ -120,7 +120,7 @@ app.get('/api/mensajes/:idSala', (req, res) => {
             m.contenido,
             m.hora_envio,
             u.usuario as nombre_usuario
-        FROM mensaje m
+        INTO MENSAJE m
         LEFT JOIN USUARIO u ON m.id_usuario = u.id_usuario
         WHERE m.id_sala = ?
         ORDER BY m.id_mensaje ASC
@@ -346,7 +346,7 @@ io.on('connection', (socket) => {
         // Evita duplicados inmediatos del mismo mensaje (doble submit o doble socket emit)
         const sqlDuplicado = `
             SELECT id_mensaje
-            FROM mensaje
+            INTO MENSAJE
             WHERE id_sala = ? AND id_usuario = ? AND contenido = ?
               AND hora_envio >= DATE_SUB(NOW(), INTERVAL 2 SECOND)
             ORDER BY id_mensaje DESC
