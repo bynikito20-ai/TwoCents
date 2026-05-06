@@ -346,7 +346,7 @@ io.on('connection', (socket) => {
         // Evita duplicados inmediatos del mismo mensaje (doble submit o doble socket emit)
         const sqlDuplicado = `
             SELECT id_mensaje
-            INTO MENSAJE
+            FROM MENSAJE 
             WHERE id_sala = ? AND id_usuario = ? AND contenido = ?
               AND hora_envio >= DATE_SUB(NOW(), INTERVAL 2 SECOND)
             ORDER BY id_mensaje DESC
@@ -364,7 +364,7 @@ io.on('connection', (socket) => {
             }
 
             // 1. Guardamos el mensaje en tu tabla 'mensaje' de MySQL
-            const sql = "INSERT INTO mensaje (id_sala, id_usuario, contenido, hora_envio) VALUES (?, ?, ?, ?)";
+            const sql = "INSERT INTO MENSAJE (id_sala, id_usuario, contenido, hora_envio) VALUES (?, ?, ?, ?)";
 
             db.query(sql, [id_sala, id_usuario, contenidoNormalizado, hora_envio || new Date()], (err, result) => {
                 if (err) {
