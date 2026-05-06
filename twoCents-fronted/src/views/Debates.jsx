@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../componentes/Sidebar';
+import Layout from '@/componentes/Layout';
 import { URL_BACKEND } from '../servicios/peticionesApi';
 import { useTemaOscuro } from '../contexto/useTemaOscuro';
 import './css/chats.css';
-// IMPORTANTE: Importamos la imagen de actualidad correcta
-import iconoActualidad from '../recursos/imagenes/Actualidad.png';
-import iconoActualidadGris from '../recursos/imagenes/Actualidad_Gris.png';
-import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/actualidad_desktop_claro.png';
-import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/actualidad_desktop_oscuro.png';
-import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/actualidad_movil_claro.png';
-import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/actualidad_movil_oscuro.png';
+// IMPORTANTE: Importamos la imagen de debates correcta
+import iconoDebates from '../recursos/imagenes/Debate.png';
+import iconoDebatesGris from '../recursos/imagenes/Debate_Gris.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/debates_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/debates_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/debates_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/debates_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
-const Actualidad = () => {
+const Debates = () => {
   const navigate = useNavigate();
   const modoOscuro = useTemaOscuro();
   const [esMovil, setEsMovil] = useState(() => window.matchMedia('(max-width: 800px)').matches);
@@ -29,10 +29,9 @@ const Actualidad = () => {
   const fondoActual = esMovil
     ? (modoOscuro ? fondoMovilOscuro : fondoMovilClaro)
     : (modoOscuro ? fondoDesktopOscuro : fondoDesktopClaro);
+  // Lista de chats de ejemplo con temática de debates
+  const [chatsDebates, setChatsDebates] = useState([]);
 
-  // Lista de chats de ejemplo con temática de actualidad y noticias
-  const [chatsActualidad, setChatsActualidad] = useState([]);
-  
   const [mostrarModal, setMostrarModal] = useState(false);
   const [nombreSala, setNombreSala] = useState('');
   const [descSala, setDescSala] = useState('');
@@ -40,7 +39,7 @@ const Actualidad = () => {
   useEffect(() => {
       const cargarSalas = async () => {
         try {
-          const respuesta = await fetch(`${URL_BACKEND}/api/salas/actualidad`);
+          const respuesta = await fetch(`${URL_BACKEND}/api/salas/debates`);
           const salasBD = await respuesta.json();
           const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
   
@@ -53,7 +52,7 @@ const Actualidad = () => {
             tipo: sala.tipo
           }));
   
-          setChatsActualidad(salasFormateadas);
+          setChatsDebates(salasFormateadas);
         } catch (error) {
           console.error("❌ Error al cargar las salas:", error);
         }
@@ -65,7 +64,7 @@ const Actualidad = () => {
   useEffect(() => {
     const actualizarNoLeidos = () => {
       const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
-      setChatsActualidad((salasActuales) =>
+      setChatsDebates((salasActuales) =>
         salasActuales.map((sala) => ({
           ...sala,
           unread: noLeidos[sala.id] || 0,
@@ -78,7 +77,6 @@ const Actualidad = () => {
     return () => window.removeEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
   }, []);
 
-    // 3. FUNCIÓN PARA CREAR LA SALA EN LA BASE DE DATOS
   const crearSala = async (e) => {
     e.preventDefault(); // Evita que se recargue la página
 
@@ -94,7 +92,7 @@ const Actualidad = () => {
         body: JSON.stringify({
           nombre: nombreSala,
           descripcion: descSala,
-          tipo: 'actualidad' // Se envía automáticamente según la vista
+          tipo: 'debates' // Se envía automáticamente según la vista
         })
       });
 
@@ -112,7 +110,7 @@ const Actualidad = () => {
         };
 
         // Añadimos la nueva sala a la vista
-        setChatsActualidad([...chatsActualidad, nuevaSala]);
+        setChatsDebates([...chatsDebates, nuevaSala]);
 
         // Limpiamos el formulario y cerramos el modal
         setNombreSala('');
@@ -133,7 +131,7 @@ const Actualidad = () => {
     noLeidos[id] = 0;
     localStorage.setItem(CLAVE_NO_LEIDOS_SALAS, JSON.stringify(noLeidos));
 
-    setChatsActualidad((salasActuales) =>
+    setChatsDebates((salasActuales) =>
       salasActuales.map((sala) =>
         sala.id === id ? { ...sala, unread: 0, hasUpdate: false } : sala
       )
@@ -143,8 +141,7 @@ const Actualidad = () => {
   };
 
   return (
-    <div className="page-layout">
-      <Sidebar />
+    <Layout>
 
       <main className="chat-container" style={{
         backgroundImage: `url(${fondoActual})`,
@@ -153,20 +150,22 @@ const Actualidad = () => {
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: esMovil ? 'scroll' : 'fixed',
       }}>
-        <header className="chat-header chat-header--actualidad">
-          <h1>Mis Chats de Actualidad</h1>
+        <header className="chat-header chat-header--debates">
+          <h1>Mis Chats de Debates</h1>
         </header>
 
         <section className="chat-list">
-          {chatsActualidad.map((chat) => (
-            <div key={chat.id} 
-              className="chat-card chat-card--actualidad"
+          {chatsDebates.map((chat) => (
+            <div 
+              key={chat.id} 
+              className="chat-card chat-card--debates"
               onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >
+              
               <div className="chat-icon-wrapper">
-                {/* Usamos el icono de Actualidad */}
-                <img src={modoOscuro ? iconoActualidadGris : iconoActualidad} alt="Icono Actualidad" />
+                {/* Usamos el icono de Debates */}
+                <img src={modoOscuro ? iconoDebatesGris : iconoDebates} alt="Icono Debates" />
                 {chat.hasUpdate && <div className="status-dot"></div>}
               </div>
 
@@ -197,11 +196,11 @@ const Actualidad = () => {
         {mostrarModal && (
           <div className="modal-overlay">
             <div className="modal-contenido">
-              <h3>Crear nueva sala</h3>
+              <h3>Crear Nueva Sala</h3>
               
               <form onSubmit={crearSala}>
                 <div className="campo-form">
-                  <label>Nombre de la Sala</label>
+                  <label>Nombre de la sala</label>
                   <input 
                     type="text" 
                     placeholder="Ej. Tenis de mesa" 
@@ -212,7 +211,7 @@ const Actualidad = () => {
                 </div>
 
                 <div className="campo-form">
-                  <label>Mini Descripción</label>
+                  <label>Mini descripción</label>
                   <textarea 
                     placeholder="¿De qué trata esta sala?" 
                     value={descSala}
@@ -226,7 +225,7 @@ const Actualidad = () => {
                   <label>Categoría</label>
                   <input 
                     type="text" 
-                    value="Actualidad" 
+                    value="Debates" 
                     disabled 
                     style={{ backgroundColor: '#f0f0f0', color: '#888', cursor: 'not-allowed' }}
                   />
@@ -244,9 +243,10 @@ const Actualidad = () => {
             </div>
           </div>
         )}
+
       </main>
-    </div>
+    </Layout>
   );
 };
 
-export default Actualidad;
+export default Debates;

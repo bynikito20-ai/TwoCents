@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../componentes/Sidebar';
+import Layout from '@/componentes/Layout';
 import { URL_BACKEND } from '../servicios/peticionesApi';
 import { useTemaOscuro } from '../contexto/useTemaOscuro';
 import './css/chats.css';
@@ -145,8 +145,7 @@ const Deportes = () => {
   };
 
   return (
-    <div className="page-layout">
-      <Sidebar />
+    <Layout>
 
       <main className="chat-container" style={{
         backgroundImage: `url(${fondoActual})`,
@@ -249,7 +248,7 @@ const Deportes = () => {
         )}
 
       </main>
-    </div>
+    </Layout>
   );
 };
 

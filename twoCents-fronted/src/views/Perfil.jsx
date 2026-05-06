@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../componentes/Sidebar.jsx';
+import Layout from '@/componentes/Layout';
 import { ThemeToggle } from '../componentes/aspecto/ThemeToggle.jsx';
 import { useFondoBody } from '../contexto/useFondoResponsive';
 import './css/Perfil.css';
@@ -65,8 +65,7 @@ export default function Perfil() {
   };
 
   return (
-    <div className="perfil-layout">
-      <Sidebar />
+    <Layout className="perfil-layout">
       <main className="pagina-perfil">
         <header className="vista-header vista-header--perfil">
           <h1 className="vista-header__title">MI PERFIL</h1>
@@ -93,6 +92,6 @@ export default function Perfil() {
           </button>
         </div>
       </main>
-    </div>
+    </Layout>
   );
 }

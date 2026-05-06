@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../componentes/Sidebar';
+import Layout from '@/componentes/Layout';
 import { URL_BACKEND } from '../servicios/peticionesApi';
 import { useTemaOscuro } from '../contexto/useTemaOscuro';
 import './css/chats.css';
-// IMPORTANTE: Importamos la imagen para que Vite sepa dónde está y la empaquete correctamente
-import iconoDiversion from '../recursos/imagenes/Diversion.png';
-import iconoDiversionGris from '../recursos/imagenes/Diversion_Gris.png';
-import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/diversion_desktop_claro.png';
-import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/diversion_desktop_oscuro.png';
-import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/diversion_movil_claro.png';
-import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/diversion_movil_oscuro.png';
+// IMPORTANTE: Importamos la imagen de política correcta
+import iconoPolitica from '../recursos/imagenes/Politica.png';
+import iconoPoliticaGris from '../recursos/imagenes/Politica_Gris.png';
+import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/politica_desktop_claro.png';
+import fondoDesktopOscuro from '../recursos/imagenes/fondos_chats_desktop/politica_desktop_oscuro.png';
+import fondoMovilClaro from '../recursos/imagenes/fondos_chats_movil/politica_movil_claro.png';
+import fondoMovilOscuro from '../recursos/imagenes/fondos_chats_movil/politica_movil_oscuro.png';
 
 const CLAVE_NO_LEIDOS_SALAS = 'salasMensajesNoLeidos';
 
-const Diversion = () => {
+const Politica = () => {
   const navigate = useNavigate();
   const modoOscuro = useTemaOscuro();
   const [esMovil, setEsMovil] = useState(() => window.matchMedia('(max-width: 800px)').matches);
@@ -29,8 +29,8 @@ const Diversion = () => {
   const fondoActual = esMovil
     ? (modoOscuro ? fondoMovilOscuro : fondoMovilClaro)
     : (modoOscuro ? fondoDesktopOscuro : fondoDesktopClaro);
-
-  const [chatsDiversion, setChatsDiversion] = useState([]);
+  // Lista de chats de ejemplo con temática de política sin notificaciones
+  const [chatsPolitica, setChatsPolitica] = useState([]);
 
   const [mostrarModal, setMostrarModal] = useState(false);
   const [nombreSala, setNombreSala] = useState('');
@@ -39,7 +39,7 @@ const Diversion = () => {
   useEffect(() => {
       const cargarSalas = async () => {
         try {
-          const respuesta = await fetch(`${URL_BACKEND}/api/salas/diversion`);
+          const respuesta = await fetch(`${URL_BACKEND}/api/salas/politica`);
           const salasBD = await respuesta.json();
           const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
   
@@ -52,7 +52,7 @@ const Diversion = () => {
             tipo: sala.tipo
           }));
   
-          setChatsDiversion(salasFormateadas);
+          setChatsPolitica(salasFormateadas);
         } catch (error) {
           console.error("❌ Error al cargar las salas:", error);
         }
@@ -64,7 +64,7 @@ const Diversion = () => {
   useEffect(() => {
     const actualizarNoLeidos = () => {
       const noLeidos = JSON.parse(localStorage.getItem(CLAVE_NO_LEIDOS_SALAS) || '{}');
-      setChatsDiversion((salasActuales) =>
+      setChatsPolitica((salasActuales) =>
         salasActuales.map((sala) => ({
           ...sala,
           unread: noLeidos[sala.id] || 0,
@@ -76,8 +76,8 @@ const Diversion = () => {
     window.addEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
     return () => window.removeEventListener('salas-no-leidos-actualizados', actualizarNoLeidos);
   }, []);
-    // 3. FUNCIÓN PARA CREAR LA SALA EN LA BASE DE DATOS
-  const crearSala = async (e) => {
+
+     const crearSala = async (e) => {
     e.preventDefault(); // Evita que se recargue la página
 
     if (nombreSala.trim() === '' || descSala.trim() === '') return;
@@ -92,7 +92,7 @@ const Diversion = () => {
         body: JSON.stringify({
           nombre: nombreSala,
           descripcion: descSala,
-          tipo: 'diversion' // Se envía automáticamente según la vista
+          tipo: 'politica' // Se envía automáticamente según la vista
         })
       });
 
@@ -110,7 +110,7 @@ const Diversion = () => {
         };
 
         // Añadimos la nueva sala a la vista
-        setChatsDiversion([...chatsDiversion, nuevaSala]);
+        setChatsPolitica([...chatsPolitica, nuevaSala]);
 
         // Limpiamos el formulario y cerramos el modal
         setNombreSala('');
@@ -131,7 +131,7 @@ const Diversion = () => {
     noLeidos[id] = 0;
     localStorage.setItem(CLAVE_NO_LEIDOS_SALAS, JSON.stringify(noLeidos));
 
-    setChatsDiversion((salasActuales) =>
+    setChatsPolitica((salasActuales) =>
       salasActuales.map((sala) =>
         sala.id === id ? { ...sala, unread: 0, hasUpdate: false } : sala
       )
@@ -139,10 +139,9 @@ const Diversion = () => {
 
     navigate(`/sala/${id}`, { state: { nombreSala: nombre } });
   };
-  
+
   return (
-    <div className="page-layout">
-      <Sidebar />
+    <Layout>
 
       <main className="chat-container" style={{
         backgroundImage: `url(${fondoActual})`,
@@ -151,23 +150,21 @@ const Diversion = () => {
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: esMovil ? 'scroll' : 'fixed',
       }}>
-        {/* Veo en tu captura que tienes un fondo rojo en el header. 
-            Si lo añadiste en un div externo, mantenlo. Yo te dejo la estructura base. */}
-        <header className="chat-header chat-header--diversion">
-          <h1>Mis Chats de Diversión</h1>
+        <header className="chat-header chat-header--politica">
+          <h1>Mis Chats de Política</h1>
         </header>
 
         <section className="chat-list">
-          {chatsDiversion.map((chat) => (
+          {chatsPolitica.map((chat) => (
             <div 
               key={chat.id} 
-              className="chat-card chat-card--diversion" 
+              className="chat-card chat-card--politica" 
               onClick={() => entrarASala(chat.id, chat.title)}
               style={{ cursor: 'pointer' }}
             >
               <div className="chat-icon-wrapper">
-                {/* Usamos la variable de la imagen que importamos arriba */}
-                <img src={modoOscuro ? iconoDiversionGris : iconoDiversion} alt="Icono Diversión" />
+                {/* Usamos el icono de Política */}
+                <img src={modoOscuro ? iconoPoliticaGris : iconoPolitica} alt="Icono Política" />
                 {chat.hasUpdate && <div className="status-dot"></div>}
               </div>
 
@@ -176,6 +173,7 @@ const Diversion = () => {
                 <p>{chat.desc}</p>
               </div>
 
+              {/* Si hay mensajes sin leer, mostramos el contador (ahora oculto) */}
               {chat.unread > 0 && (
                 <div className="msg-count">{chat.unread}</div>
               )}
@@ -183,6 +181,7 @@ const Diversion = () => {
           ))}
         </section>
 
+        {/* BOTÓN FLOTANTE PARA ABRIR EL MODAL */}
         <button
           className="btn-add-chat"
           title="Crear nuevo chat"
@@ -226,7 +225,7 @@ const Diversion = () => {
                   <label>Categoría</label>
                   <input 
                     type="text" 
-                    value="Diversion" 
+                    value="Política" 
                     disabled 
                     style={{ backgroundColor: '#f0f0f0', color: '#888', cursor: 'not-allowed' }}
                   />
@@ -244,10 +243,9 @@ const Diversion = () => {
             </div>
           </div>
         )}
-
       </main>
-    </div>
+    </Layout>
   );
 };
 
-export default Diversion;
+export default Politica;

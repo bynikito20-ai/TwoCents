@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from '../componentes/Sidebar.jsx';
+import Layout from '@/componentes/Layout';
 import './css/Informacion.css';
 import { useFondoBody } from '../contexto/useFondoResponsive';
 import fondoDesktopClaro from '../recursos/imagenes/fondos_chats_desktop/informacion_desktop_claro.png';
@@ -16,8 +16,7 @@ const Informacion = () => {
   });
 
   return (
-    <div className="info-layout">
-      <Sidebar />
+    <Layout className="info-layout">
 
       {/* Usamos una etiqueta <main> para el contenido y que pueda hacer scroll si es muy largo */}
       <main className="informacion-main">
@@ -130,7 +129,7 @@ const Informacion = () => {
           <p>&copy; 2026 - I.E.S Santiago Hernández</p>
         </footer>
       </main>
-    </div>
+    </Layout>
   );
 };
 

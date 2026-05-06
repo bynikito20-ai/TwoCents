@@ -1,0 +1,12 @@
+export { default as IniciarSesion } from './IniciarSesion';
+export { default as Registro } from './Registro';
+export { default as Inicio } from './Inicio';
+export { default as Perfil } from './Perfil';
+export { default as Informacion } from './Informacion';
+export { default as Diversion } from './Diversion';
+export { default as Deportes } from './Deportes';
+export { default as Politica } from './Politica';
+export { default as Actualidad } from './Actualidad';
+export { default as Debates } from './Debates';
+export { default as Recuerdos } from './Recuerdos';
+export { default as Reflexivas } from './Reflexivas';
