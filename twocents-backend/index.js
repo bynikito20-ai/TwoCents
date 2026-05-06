@@ -120,7 +120,7 @@ app.get('/api/mensajes/:idSala', (req, res) => {
             m.contenido,
             m.hora_envio,
             u.usuario as nombre_usuario
-        INTO MENSAJE m
+        FROM MENSAJE m
         LEFT JOIN USUARIO u ON m.id_usuario = u.id_usuario
         WHERE m.id_sala = ?
         ORDER BY m.id_mensaje ASC
