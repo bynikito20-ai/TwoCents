@@ -366,7 +366,7 @@ io.on('connection', (socket) => {
             // 1. Guardamos el mensaje en tu tabla 'mensaje' de MySQL
             const sql = "INSERT INTO MENSAJE (id_sala, id_usuario, contenido, hora_envio) VALUES (?, ?, ?, ?)";
 
-            db.query(sql, [id_sala, id_usuario, contenidoNormalizado, hora_envio || new Date()], (err, result) => {
+            db.query(sql, [id_sala, id_usuario, contenidoNormalizado, new Date()], (err, result) => {
                 if (err) {
                     console.error("❌ Error al guardar mensaje:", err);
                     return;
