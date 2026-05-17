@@ -18,4 +18,4 @@ export const MoonStars = ({ size = 30 }) => {
       <path d="M19 11h2m-1 -1v2" />
     </svg>
   );
-// }
+};
